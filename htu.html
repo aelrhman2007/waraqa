@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيفية الاستخدام - ورقة</title>
+    <link rel="icon" href="assets/logo.png" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Embedded CSS -->
+    <style>
+        :root {
+            --font-main: 'Tajawal', sans-serif;
+            --primary-color: #2980b9;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --page-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --code-bg-color: #e9ecef;
+            --code-text-color: #c7254e;
+            --table-header-bg: #f2f2f2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--page-bg);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .3s ease;
+            font-family: var(--font-main);
+            background-color: #e9ecef;
+            color: #333;
+            border: 1px solid var(--border-color);
+        }
+
+        .back-btn:hover {
+            background-color: #ced4da;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section h2 i {
+            margin-left: 10px;
+        }
+        
+        .section h3 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            color: #34495e;
+        }
+        
+        .section p, .section li {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .section ul {
+            list-style: none;
+            padding-right: 20px;
+        }
+        
+        .section ul li {
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .section ul li::before {
+            content: "\f138"; /* Font Awesome check square icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0;
+            top: 2px;
+            color: var(--primary-color);
+        }
+
+        code {
+            font-family: monospace;
+            background-color: var(--code-bg-color);
+            color: var(--code-text-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+
+        .styled-table th, .styled-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: right;
+        }
+
+        .styled-table thead tr {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+        }
+
+        .styled-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: var(--background-color);
+        }
+        
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .alert {
+            padding: 1rem;
+            border: 1px solid transparent;
+            border-radius: .25rem;
+            margin: 1rem 0;
+            border-left: 5px solid;
+        }
+        
+        .alert-info {
+            color: #0c5460;
+            background-color: #d1ecf1;
+            border-color: #bee5eb #bee5eb #bee5eb #0c5460;
+        }
+        
+        strong {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .feature-list i {
+            width: 30px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="page-header">
+            <img src="assets/logo.png" alt="شعار ورقة" style="width: 70px; margin-bottom: 10px;">
+            <h1><i class="fas fa-book-open"></i> دليل استخدام ورقة</h1>
+            <p>دليلك الشامل لإنشاء وتنسيق أوراق الامتحانات بكل سهولة واحترافية.</p>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> العودة إلى الرئيسية</a>
+        </div>
+
+        <div class="section" id="getting-started">
+            <h2><i class="fas fa-rocket"></i> الخطوات الأولى</h2>
+            <p>عند فتح التطبيق، ستجد خيارين رئيسيين للبدء:</p>
+            <ul>
+                <li><strong><i class="fas fa-file-excel"></i> رفع ملف Excel:</strong> الخيار الأسرع إذا كانت أسئلتك جاهزة مسبقًا في جدول بيانات. يقوم التطبيق بتحميل وتنسيق جميع الأسئلة تلقائيًا.</li>
+                <li><strong><i class="fas fa-pen-ruler"></i> البدء من الصفر:</strong> يفتح لك محررًا فارغًا لتتمكن من بناء ورقة الامتحان سؤالاً بسؤال وإضافة العناصر المختلفة يدويًا.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="excel-prep">
+            <h2><i class="fas fa-file-excel"></i> إعداد ملف Excel</h2>
+            <p>لتضمن استيراد الأسئلة بشكل صحيح، يجب أن يحتوي ملف الإكسل على الأعمدة التالية باللغة العربية. ليس من الضروري الالتزام بالترتيب، ولكن أسماء الأعمدة يجب أن تكون مطابقة.</p>
+            
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>اسم العمود</th>
+                        <th>الوصف</th>
+                        <th>ملاحظات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>السؤال</code></td>
+                        <td>نص السؤال الرئيسي.</td>
+                        <td><strong>(مطلوب)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>الإجابة أ</code>, <code>الإجابة ب</code>, ...</td>
+                        <td>نصوص الخيارات الأربعة للسؤال.</td>
+                        <td><strong>(مطلوب)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><code>العبارة</code></td>
+                        <td>عبارة تمهيدية تظهر فوق السؤال (مثل "اقرأ النص التالي ثم أجب...").</td>
+                        <td>(اختياري)</td>
+                    </tr>
+                    <tr>
+                        <td><code>الصورة</code></td>
+                        <td>رابط URL لصورة مرتبطة بالسؤال. يجب أن يكون الرابط مباشرًا للصورة.</td>
+                        <td>(اختياري)</td>
+                    </tr>
+                    <tr>
+                        <td><code>النوع</code></td>
+                        <td>طريقة عرض الإجابات. استخدم الأرقام: <code>1</code> (عمودي)، <code>2</code> (عمودان)، <code>3</code> (أفقي).</td>
+                        <td>(اختياري - الافتراضي هو 3)</td>
+                    </tr>
+                     <tr>
+                        <td><code>بدء عد جديد</code></td>
+                        <td>ضع الرقم <code>1</code> في هذه الخانة إذا أردت أن يبدأ ترقيم الأسئلة من جديد عند هذا السؤال.</td>
+                        <td>(اختياري)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section" id="actions">
+            <h2><i class="fas fa-tools"></i> شريط الإجراءات (لوحة التحكم)</h2>
+            <p>تحتوي لوحة التحكم الجانبية على جميع الأدوات التي تحتاجها لبناء ورقتك الامتحانية:</p>
+            <ul class="feature-list">
+                <li><i class="fas fa-file-pdf"></i><strong>حفظ كـ PDF:</strong> لتصدير عملك النهائي على شكل ملف PDF جاهز للطباعة.</li>
+                <li><i class="fas fa-file-import"></i><strong>إضافة أسئلة من Excel:</strong> لإضافة المزيد من الأسئلة من ملف Excel إلى ورقتك الحالية (لن يحذف الأسئلة الموجودة).</li>
+                <li><i class="fas fa-plus"></i><strong>إضافة سؤال اختياري:</strong> لإضافة سؤال اختياري فارغ بشكل يدوي.</li>
+                <li><i class="fas fa-pen-alt"></i><strong>إضافة سؤال مقالي:</strong> لإضافة سؤال مقالي فارغ مع أسطر للكتابة.</li>
+                <li><i class="fas fa-heading"></i><strong>إضافة رأس للأسئلة:</strong> لإضافة عنوان فرعي لمجموعة من الأسئلة (مثال: "ثانيًا: القراءة").</li>
+                <li><i class="fas fa-file-alt"></i><strong>إضافة قطعة قراءة:</strong> تظهر نافذة لإدخال نص القطعة وتحديد عدد الأسئلة المرتبطة بها.</li>
+                <li><i class="fas fa-feather-alt"></i><strong>إضافة نص شعري:</strong> تظهر نافذة لإدخال الأبيات الشعرية. افصل بين الشطرين بمسافة مزدوجة.</li>
+                <li><i class="fas fa-stamp"></i><strong>إضافة علامة مائية:</strong> لوضع علامة مائية (نص أو صورة) على جميع الصفحات.</li>
+                 <li><i class="fas fa-undo"></i>/ <i class="fas fa-redo"></i><strong>تراجع/إعادة:</strong> للتراجع عن آخر إجراء قمت به أو إعادته.</li>
+            </ul>
+        </div>
+        
+        <div class="section" id="editing">
+            <h2><i class="fas fa-mouse-pointer"></i> تعديل العناصر والتحكم بها</h2>
+            <p>التفاعل مع العناصر في الصفحة سهل للغاية. <strong>انقر بزر الفأرة الأيمن</strong> على أي عنصر (سؤال، صورة، عنوان، ...) لفتح قائمة السياق التي تمنحك خيارات مخصصة.</p>
+            <h3>أهم خيارات قائمة السياق:</h3>
+            <ul>
+                <li><strong><i class="fas fa-arrow-up"></i> نقل لأعلى / <i class="fas fa-arrow-down"></i> لأسفل:</strong> لتغيير ترتيب العنصر في الصفحة.</li>
+                <li><strong><i class="fas fa-times-circle"></i> حذف العنصر:</strong> لإزالة العنصر نهائيًا.</li>
+                <li><strong><i class="fas fa-upload"></i> إضافة/تغيير صورة:</strong> لرفع صورة من جهازك للسؤال المحدد.</li>
+                <li><strong><i class="fas fa-th-large"></i> تعديل نمط الإجابات:</strong> لتغيير طريقة عرض الإجابات (عمودي، عمودان، أفقي).</li>
+                 <li><strong><i class="fas fa-sort-numeric-down"></i> بدء العد من رقم محدد:</strong> لإجبار الترقيم على البدء من رقم معين عند هذا السؤال.</li>
+            </ul>
+             <div class="alert alert-info">
+                <strong>ملاحظة:</strong> يمكنك تعديل أي نص في الصفحة مباشرة بالنقر عليه والكتابة، سواء كان نص السؤال، الإجابات، أو العناوين.
+            </div>
+        </div>
+
+        <div class="section" id="header-footer">
+            <h2><i class="fas fa-window-maximize"></i> تخصيص الهيدر والفوتر</h2>
+            <p>يمكنك التحكم الكامل في رأس وتذييل الصفحة من خلال لوحة التحكم:</p>
+            <ul>
+                <li><strong>إظهار أو إخفاء:</strong> استخدم مربعات الاختيار في قسم "تخصيص الهيدر والفوتر" لإظهارهما أو إخفائهما تمامًا.</li>
+                <li><strong>تعديل النص:</strong> انقر مباشرة على أي خانة في الهيدر أو الفوتر لتعديل النص الموجود بداخلها.</li>
+                <li><strong>إضافة وحذف الخانات:</strong> انقر بزر الفأرة الأيمن على أي خانة في الهيدر أو الفوتر لإظهار خيار لإضافة خانة جديدة أو حذف الخانة الحالية.</li>
+                <li><strong>تغيير الألوان:</strong> يمكنك تغيير لون خلفية الهيدر والفوتر، بالإضافة إلى لون خلفية الخانات النصية بشكل مستقل من قسم الألوان.</li>
+            </ul>
+        </div>
+
+        <div class="section" id="customization">
+            <h2><i class="fas fa-palette"></i> تخصيص الألوان والأحجام</h2>
+            <p>يوفر التطبيق مرونة عالية في تخصيص المظهر ليناسب هويتك البصرية.</p>
+            <h3><i class="fas fa-paint-brush"></i> تغيير الألوان</h3>
+            <p>من قسم "ألوان المحتوى" في لوحة التحكم، يمكنك تغيير لون كل جزء من أجزاء الصفحة تقريبًا، مثل لون نص السؤال، خلفية رقم السؤال، لون إطار العنوان، وغيرها الكثير.</p>
+             <h3><i class="fas fa-text-height"></i> تغيير الأحجام</h3>
+             <p>من قسم "حجم الخطوط والأبعاد"، استخدم أشرطة التمرير (Sliders) للتحكم الدقيق في حجم خط العناوين، الأسئلة، الإجابات، وحجم الدوائر المستخدمة في ترقيم الإجابات والصفحات.</p>
+        </div>
+
+    </div>
+    <footer style="text-align:center; margin-top: 2rem; color: #888; font-size: 1rem;">
+        تم تصميم وبرمجة هذا البرنامج بواسطة عبدالرحمن زهران &mdash; جميع الحقوق محفوظة
+    </footer>
+
+</body>
+</html>
