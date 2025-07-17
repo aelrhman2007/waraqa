@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - ورقة</title>
+    <link rel="icon" href="assets/waraqa-blue.svg" type="image/x-icon">
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ... نفس أكواد الـ CSS الموجودة في login.html ... */
+        :root { --font-main: 'Tajawal', sans-serif; --primary-color: #2980b9; --secondary-color: #6c757d; --background-color: #f8f9fa; --text-color: #333; --border-color: #dee2e6; --shadow-color: rgba(0,0,0,0.1); --danger-color: #d9534f; --success-color: #5cb85c; } body { font-family: var(--font-main); background-color: var(--background-color); color: var(--text-color); line-height: 1.6; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; } .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1; padding: 2rem; } .auth-container { background: #fff; padding: 2rem 3rem; border-radius: 12px; box-shadow: 0 5px 25px var(--shadow-color); width: 100%; max-width: 600px; text-align: center; } .auth-container .logo { max-width: 150px; margin-bottom: 1rem; } .auth-container h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--text-color); font-weight: 700; } .dashboard-buttons { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; align-items: center; } .auth-btn { width: 100%; max-width: 300px; padding: 1rem; font-size: 1.1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; font-family: var(--font-main); transition: background-color 0.3s; text-decoration: none; } .auth-btn:hover { background-color: #2471a3; } footer { text-align:center; padding: 1rem; color: #888; font-size: 1rem; } .logout-btn { background-color: var(--danger-color); } .logout-btn:hover { background-color: #c9302c; }
+    </style>
+</head>
+<body>
+    <div class="auth-screen">
+        <div class="auth-container">
+            <img src="assets/waraqa-blue.svg" alt="شعار ورقة" class="logo">
+            <h2 id="welcome-message">أهلاً بك</h2>
+            <p style="font-size: 1.1rem; color: var(--secondary-color);">
+                أنت الآن جاهز لاستخدام أداة إنشاء أوراق العمل.
+            </p>
+            <div class="dashboard-buttons">
+                 <a href="index.html" class="auth-btn">
+                    <i class="fas fa-pen-ruler"></i> البدء بإنشاء ورقة عمل
+                </a>
+                 <button id="logout-btn" class="auth-btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                </button>
+            </div>
+        </div>
+    </div>
+     <footer>
+        تم تصميم وبرمجة هذا البرنامج بواسطة عبدالرحمن زهران — جميع الحقوق محفوظة
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 🚨 هام: استبدل هذا الكائن بالإعدادات الخاصة بمشروعك
+        const firebaseConfig = {
+  apiKey: "AIzaSyCq2p7-r7BzjgbmVvdl5YF2Dy9-lcmZrSo",
+  authDomain: "waraqa-8decf.firebaseapp.com",
+  projectId: "waraqa-8decf",
+  storageBucket: "waraqa-8decf.firebasestorage.app",
+  messagingSenderId: "458763676466",
+  appId: "1:458763676466:web:bd4c3bfb9b53fcd4d3852b",
+  measurementId: "G-N9MPM4VK00"
+};
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const welcomeMessage = document.getElementById('welcome-message');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // حماية الصفحة: التحقق من حالة تسجيل الدخول والصلاحية
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // المستخدم مسجل دخوله
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    if (userDocSnap.data().isAllowed === true) {
+                        // المستخدم مسموح له: عرض رسالة الترحيب
+                        const userName = userDocSnap.data().name;
+                        welcomeMessage.textContent = `أهلاً بك، ${userName}`;
+                    } else {
+                        // المستخدم غير مسموح له: توجيه إلى صفحة الانتظار
+                        window.location.href = 'subscribe.html';
+                    }
+                } else {
+                     // حالة نادرة: المستخدم موجود في Auth ولكن ليس في Firestore
+                    await signOut(auth);
+                    window.location.href = 'login.html';
+                }
+            } else {
+                // لا يوجد مستخدم مسجل: توجيه إلى صفحة تسجيل الدخول
+                window.location.href = 'login.html';
+            }
+        });
+
+        // تسجيل الخروج
+        logoutBtn.addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+
+    </script>
+</body>
+</html>

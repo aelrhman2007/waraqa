@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحساب قيد المراجعة - ورقة</title>
+    <link rel="icon" href="assets/waraqa-blue.svg" type="image/x-icon">
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ... نفس أكواد الـ CSS الموجودة في login.html ... */
+        :root { --font-main: 'Tajawal', sans-serif; --primary-color: #2980b9; --secondary-color: #6c757d; --background-color: #f8f9fa; --text-color: #333; --border-color: #dee2e6; --shadow-color: rgba(0,0,0,0.1); --danger-color: #d9534f; --success-color: #5cb85c; } body { font-family: var(--font-main); background-color: var(--background-color); color: var(--text-color); line-height: 1.6; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; } .auth-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; flex-grow: 1; padding: 2rem; } .auth-container { background: #fff; padding: 2rem 3rem; border-radius: 12px; box-shadow: 0 5px 25px var(--shadow-color); width: 100%; max-width: 500px; text-align: center; } .auth-container .logo { max-width: 150px; margin-bottom: 1rem; } .auth-container h2 { font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--text-color); font-weight: 700; } .form-group { margin-bottom: 1.25rem; text-align: right; } .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; } .form-group input { width: 100%; padding: 12px 15px; font-size: 1rem; border-radius: 6px; border: 1px solid var(--border-color); font-family: var(--font-main); box-sizing: border-box; direction: rtl; } .auth-btn { width: 100%; padding: 1rem; font-size: 1.1rem; border-radius: 8px; border: none; cursor: pointer; background-color: var(--primary-color); color: white; font-family: var(--font-main); margin-top: 1rem; transition: background-color 0.3s; } .auth-btn:hover { background-color: #2471a3; } .auth-switch-link { margin-top: 1.5rem; color: var(--secondary-color); } .auth-switch-link a { color: var(--primary-color); text-decoration: none; font-weight: bold; } #message { margin-top: 1rem; padding: 10px; border-radius: 5px; font-weight: 500; display: none; } #message.error { background-color: #f8d7da; color: #721c24; display: block; } #message.success { background-color: #d4edda; color: #155724; display: block; } footer { text-align:center; padding: 1rem; color: #888; font-size: 1rem; } .secondary-btn { background-color: #e9ecef; color: #333; border: 1px solid var(--border-color); } .secondary-btn:hover { background-color: #ced4da; }
+    </style>
+</head>
+<body>
+    <div class="auth-screen">
+        <div class="auth-container">
+            <i class="fas fa-hourglass-half fa-3x" style="color: var(--primary-color); margin-bottom: 1.5rem;"></i>
+            <h2>حسابك قيد المراجعة</h2>
+            <p style="font-size: 1.1rem; color: var(--secondary-color);">
+                شكراً لتسجيلك. ليس لديك صلاحية الدخول بعد.<br>
+                سيقوم المسؤول بمراجعة طلبك وتفعيل الحساب قريباً.
+            </p>
+            <button id="logout-btn" class="auth-btn secondary-btn" style="margin-top: 2rem;">تسجيل الخروج</button>
+        </div>
+    </div>
+     <footer>
+        تم تصميم وبرمجة هذا البرنامج بواسطة عبدالرحمن زهران — جميع الحقوق محفوظة
+    </footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        // 🚨 هام: استبدل هذا الكائن بالإعدادات الخاصة بمشروعك
+        const firebaseConfig = {
+  apiKey: "AIzaSyCq2p7-r7BzjgbmVvdl5YF2Dy9-lcmZrSo",
+  authDomain: "waraqa-8decf.firebaseapp.com",
+  projectId: "waraqa-8decf",
+  storageBucket: "waraqa-8decf.firebasestorage.app",
+  messagingSenderId: "458763676466",
+  appId: "1:458763676466:web:bd4c3bfb9b53fcd4d3852b",
+  measurementId: "G-N9MPM4VK00"
+};
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const logoutBtn = document.getElementById('logout-btn');
+
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورقة</title>
-    <link rel="icon" href="assets/logo.png" type="image/x-icon">
+    <link rel="icon" href="assets/waraqa-blue.svg" type="image/x-icon">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,13 +43,15 @@
             --page-title-bg-color: #ffffff;
             --page-title-border-color: #ced4da;
             --poetry-text-color: #333333; 
-            --poetry-num-color: #888888; 
+            --poetry-num-color: #007bff;
 
             /* Header/Footer Colors */
             --page-header-bg: #f8f9fa;
             --page-footer-bg: #f8f9fa;
             --header-item-bg: #ffffff;
             --footer-item-bg: #ffffff;
+            --header-text-color: #333;
+            --footer-text-color: #333;
 
             --title-fs: 32px;
             --q-header-fs: 18px; 
@@ -62,9 +64,10 @@
             --answer-head-fs: 16px;
             --answer-text-fs: 16px;
             --page-num-fs: 12px;
-            /* NEW: Header/Footer Font Sizes */
             --header-text-fs: 14px;
             --footer-text-fs: 12px;
+            --header-logo-size: 50px;
+
             --page-num-circle-size: 30px;
             --answer-head-circle-size: 28px;
         }
@@ -72,6 +75,9 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+        html, body {
+            overflow-x: hidden;
         }
         html:fullscreen {
             background: var(--background-color);
@@ -91,6 +97,7 @@
         
         #landing-screen {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -142,6 +149,54 @@
         #editor-screen {
             display: flex;
         }
+        
+        #editor-screen.sidebar-hidden #sidebar {
+            margin-right: -320px;
+        }
+        #editor-screen.sidebar-hidden #main-content {
+            margin-right: 0;
+        }
+        #editor-screen.sidebar-hidden #global-controls {
+            right: 15px;
+        }
+
+
+        #global-controls {
+            position: fixed;
+            top: 15px;
+            right: 335px; /* 320px sidebar + 15px gap */
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: right 0.3s ease;
+        }
+        #global-controls button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background-color: var(--sidebar-bg);
+            color: var(--primary-color);
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: all 0.2s ease-in-out;
+        }
+        #global-controls button:hover {
+             background-color: var(--primary-color);
+             color: white;
+        }
+        #global-controls button:disabled {
+            background-color: #bdc3c7; 
+            color: #7f8c8d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         #sidebar {
             width: 320px;
             background-color: var(--sidebar-bg);
@@ -154,9 +209,6 @@
             display: flex;
             flex-direction: column;
             transition: margin-right 0.3s ease;
-        }
-        html:fullscreen #sidebar {
-            margin-right: -320px;
         }
 
         button {
@@ -173,26 +225,12 @@
             align-items: center;
             justify-content: center;
             position: relative;
+            min-height: 58px;
         }
         .sidebar-header h3 {
              margin: 0;
         }
-        #home-btn {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.3rem;
-            cursor: pointer;
-            padding: 5px;
-            transition: color .2s ease-in-out;
-        }
-        #home-btn:hover {
-            color: #d1e7ff;
-        }
+        
         .sidebar-content {
             padding: 1rem;
             overflow-y: auto;
@@ -206,11 +244,6 @@
             justify-content: center;
             align-items: flex-start;
             transition: margin-right 0.3s ease;
-        }
-        html:fullscreen #main-content {
-            margin-right: 0;
-            padding: 2rem 0; /* Adjust padding in fullscreen */
-            width: 100%;
         }
 
         #pages-container {
@@ -360,6 +393,7 @@
             align-items: center;
             padding: 0 10mm;
             box-sizing: border-box;
+            gap: 15px;
         }
         .page-header {
             top: 0;
@@ -384,11 +418,29 @@
             flex-shrink: 0;
             cursor: text;
         }
-        .header-box { font-size: var(--header-text-fs); }
-        .footer-box { font-size: var(--footer-text-fs); }
+        .header-box { font-size: var(--header-text-fs); color: var(--header-text-color); }
+        .footer-box { font-size: var(--footer-text-fs); color: var(--footer-text-color); }
+        .header-box img { max-height: var(--header-logo-size); max-width: 100%; height: auto; object-fit: contain; }
         
+        .speaker-name {
+            text-align: right; /* To align correctly in flexbox for RTL */
+            margin-bottom: 0rem;
+            color: var(--secondary-color);
+            padding: 0.1rem 0.5rem;
+            width: auto;
+            flex-shrink: 0;
+            white-space: nowrap;
+            cursor: text;
+        }
+        .question-wrapper .speaker-name {
+             margin-bottom: 0; /* remove margin when inside a question */
+             align-self: baseline;
+        }
+
         .page-title {
-            display: inline-block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             font-size: var(--title-fs, 2.2rem);
             font-weight: 700;
@@ -397,16 +449,14 @@
             border: 2px solid var(--page-title-border-color, #1a1a1a);
             padding: 0.25rem 2rem;
             border-radius: 16px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
             margin-bottom: 0.5rem;
             position: relative;
             overflow: hidden;
+            width: fit-content;
         }
 
-
-        .page-title:empty {
-            display: none;
-        }
         .page-number {
             position: absolute;
             bottom: 10mm;
@@ -443,20 +493,45 @@
             border-radius: 8px;
             background-color: #fafafa;
             page-break-inside: avoid;
+            counter-reset: passage-counter;
         }
-        .reading-passage-text {
+        .reading-passage-wrapper .reading-passage-text {
             font-size: var(--passage-text-fs);
             line-height: 1.7;
-            white-space: pre-wrap;
+            margin: 0 0 0.5em 0;
+            padding: 0;
+            text-indent: 1.6em;
         }
-        .reading-passage-text p, .reading-passage-text div {
-            text-indent: 2em;
-            margin-top: 0;
-            margin-bottom: 0.5em; 
+        .reading-passage-text {
+            position: relative;
         }
-        .reading-passage-text p:last-child, .reading-passage-text div:last-child {
+        .reading-passage-text .passage-num {
+            position: absolute;
+            right: -1.2em;
+            top: 0;
+            font-size: var(--passage-num-fs);
+            font-weight: bold;
+            width: 1.5em;
+            height: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            counter-increment: passage-counter;
+            /* لضمان أن الرقم يظهر في منتصف الدائرة */
+            text-align: center;
+            vertical-align: middle;
+        }
+       
+        .reading-passage-text .passage-num::before {
+            content: counter(passage-counter, decimal);
+            color: var(--poetry-num-color);
+        }
+       
+        .reading-passage-wrapper [contenteditable="true"] p:last-child {
             margin-bottom: 0;
         }
+
         .poetry-wrapper {
             border: 2px dashed #999;
             padding: 1rem;
@@ -507,23 +582,21 @@
             border-radius: 8px;
             padding: .5rem;
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: .8rem;
+            flex-direction: column;
+            gap: .5rem;
             position: relative;
             background-color: #fff;
             page-break-inside: avoid;
         }
-        .question-header {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
+        .question-main-content {
+             display: flex;
+            flex-direction: row;
             justify-content: space-between;
             align-items: flex-start;
-            gap: 1rem;
-            width: 100%;
-            box-sizing: border-box;
+            gap: .8rem;
+        }
+        .question-header {
+            flex: 1;
             display: block;
         }
         .question-body {
@@ -537,12 +610,19 @@
             align-items: flex-start;
             gap: .75rem;
         }
+        .statement-speaker-line {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.4rem;
+            width: 100%;
+            direction: rtl;
+        }
         .question-image {
-            width: 120px;
             height: 120px;
             object-fit: cover;
             border-radius: 6px;
-            border: 1px solid var(--border-color);
             flex-shrink: 0;
             align-self: flex-start;
             margin-right: 0;
@@ -564,11 +644,10 @@
             color: var(--statement-text-color);
             padding: .2rem;
             border-radius: 6px;
-            border-right: 4px solid var(--primary-color);
+            border-left: 4px solid var(--question-num-bg);
             font-style: italic;
-            width: 100%;
+            flex-grow: 1; /* Changed from width:100% for flexbox */
             box-sizing: border-box;
-            display: block;
             text-align: center;
         }
         .question-text {
@@ -618,6 +697,7 @@
         .answer-text {
             font-size: var(--answer-text-fs);
             color: var(--answer-text-color);
+            min-width: 100px;
         }
         .essay-answer-lines {
             padding-top: .5rem;
@@ -635,38 +715,38 @@
         [contenteditable]:focus {
             outline: 2px solid var(--primary-color);
             background-color: #eef6ff;
-            
         }
-        #custom-context-menu {
+
+        #custom-context-menu, #text-format-context-menu {
             position: absolute;
             z-index: 1000;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,.2);
-            padding: 8px 0;
-            min-width: 260px;
+            padding: 4px 0;
+            min-width: 220px;
         }
-        #custom-context-menu ul {
+        #custom-context-menu ul, #text-format-context-menu ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        #custom-context-menu li {
-            padding: 10px 15px;
+        #custom-context-menu li, #text-format-context-menu li {
+            padding: 4px 8px;
             cursor: pointer;
-            font-size: .95rem;
+            font-size: .85rem;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        #custom-context-menu li:hover {
+        #custom-context-menu li:hover, #text-format-context-menu li:hover {
             background-color: #f1f3f5;
         }
-        #custom-context-menu li.danger:hover {
+        #custom-context-menu li.danger:hover, #text-format-context-menu li.danger:hover {
             background-color: #ffe3e3;
             color: #d90429;
         }
-        #custom-context-menu hr {
+        #custom-context-menu hr, #text-format-context-menu hr {
             border: none;
             border-top: 1px solid #eee;
             margin: 5px 0;
@@ -681,7 +761,7 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,.2);
-            padding: 8px 0;
+            padding: 4px 0;
             min-width: 180px;
             list-style: none;
             display: none;
@@ -690,10 +770,22 @@
         #custom-context-menu li#ctx-change-layout:hover > #ctx-layout-submenu {
             display: block;
         }
-        #custom-context-menu #ctx-layout-submenu li {
-            padding: 8px 15px;
-        }
-        #custom-prompt-overlay, #reading-passage-prompt-overlay, #poetry-prompt-overlay, #watermark-prompt-overlay, #question-defaults-prompt-overlay {
+        #custom-context-menu #ctx-layout-submenu img {
+    width: 36px;
+    height: 24px;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 2px solid #eee;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+#custom-context-menu #ctx-layout-submenu li:hover img {
+    border-color: #2980b9;
+    box-shadow: 0 4px 12px rgba(41,128,185,0.10);
+    background: #eaf6ff;
+}
+
+        #custom-prompt-overlay, #reading-passage-prompt-overlay, #poetry-prompt-overlay, #watermark-prompt-overlay, #question-defaults-prompt-overlay, #essay-q-defaults-prompt-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -705,14 +797,14 @@
             justify-content: center;
             align-items: center;
         }
-        #custom-prompt, #reading-passage-prompt, #poetry-prompt, #watermark-prompt, #question-defaults-prompt {
+        #custom-prompt, #reading-passage-prompt, #poetry-prompt, #watermark-prompt, #question-defaults-prompt, #essay-q-defaults-prompt {
             background: white;
             padding: 2rem;
             border-radius: 8px;
             width: 90%;
             max-width: 500px;
         }
-        #custom-prompt h4, #reading-passage-prompt h4, #poetry-prompt h4, #watermark-prompt h4, #question-defaults-prompt h4 {
+        #custom-prompt h4, #reading-passage-prompt h4, #poetry-prompt h4, #watermark-prompt h4, #question-defaults-prompt h4, #essay-q-defaults-prompt h4 {
             margin-bottom: 1rem;
             text-align: center;
         }
@@ -721,7 +813,7 @@
             color: #666;
             text-align: center;
         }
-        #custom-prompt input, #reading-passage-prompt textarea, #reading-passage-prompt input, #poetry-prompt textarea, #poetry-prompt input, #watermark-prompt input[type="text"] {
+        #custom-prompt input, #reading-passage-prompt textarea, #reading-passage-prompt input, #poetry-prompt textarea, #poetry-prompt input, #watermark-prompt input[type="text"], #essay-q-defaults-prompt input {
             width: 100%;
             padding: 10px;
             border-radius: 4px;
@@ -746,45 +838,23 @@
             border: 1px solid transparent;
             cursor: pointer;
         }
-        #prompt-ok, #passage-prompt-ok, #poetry-prompt-ok, #watermark-prompt-ok, #q-defaults-prompt-ok {
+        #prompt-ok, #passage-prompt-ok, #poetry-prompt-ok, #watermark-prompt-ok, #q-defaults-prompt-ok, #essay-q-defaults-prompt-ok {
             background: var(--primary-color);
             color: white;
         }
-        #prompt-cancel, #passage-prompt-cancel, #poetry-prompt-cancel, #watermark-prompt-cancel, #q-defaults-prompt-cancel {
+        #prompt-cancel, #passage-prompt-cancel, #poetry-prompt-cancel, #watermark-prompt-cancel, #q-defaults-prompt-cancel, #essay-q-defaults-prompt-cancel {
             background: #f1f3f5;
         }
 
         /* START: Question Defaults Prompt Styles */
-        #question-defaults-prompt { text-align: right; }
+        #question-defaults-prompt, #essay-q-defaults-prompt { text-align: right; }
         .prompt-setting-group { margin-bottom: 1.5rem; }
         .prompt-setting-group h5 { margin-bottom: 0.75rem; color: #555; }
-        #default-layout-selector {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0.5rem;
-        }
-        #default-layout-selector label {
-            flex: 1;
-            padding: 0.5rem;
-            border: 2px solid var(--border-color);
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-        #default-layout-selector img {
-            width: 48px;
-            height: 32px;
-            object-fit: contain;
-            margin-bottom: 0.25rem;
-        }
+        #default-layout-selector { display: flex; flex-direction: column; align-items: stretch; gap: 0.5rem; }
+        #default-layout-selector label { flex: 1; padding: 0.5rem; border: 2px solid var(--border-color); border-radius: 6px; cursor: pointer; text-align: center; transition: all 0.2s; }
+        #default-layout-selector img { width: 48px; height: 32px; object-fit: contain; margin-bottom: 0.25rem; }
         #default-layout-selector input { display: none; }
-        #default-layout-selector input:checked + label {
-            border-color: var(--primary-color);
-            background-color: #eef6ff;
-            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
-        }
+        #default-layout-selector input:checked + label { border-color: var(--primary-color); background-color: #eef6ff; box-shadow: 0 0 5px rgba(41, 128, 185, 0.5); }
         /* END: Question Defaults Prompt Styles */
 
         /* START: Watermark Modal Specific Styles */
@@ -805,12 +875,7 @@
 
 
         #poetry-prompt .kashida-toggle-container { text-align: right; margin-bottom: 1rem; display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
-        #text-format-toolbar { position: absolute; background: #333; padding: 5px 10px; border-radius: 6px; z-index: 1001; display: flex; gap: 8px; align-items: center; }
-        #text-format-toolbar button { background: none; border: none; color: white; font-size: 16px; cursor: pointer; width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center; }
-        #text-format-toolbar button:hover { background-color: #555; border-radius: 4px; }
-        #text-format-toolbar button.active { background-color: var(--primary-color); color: white; border-radius: 4px; }
-        #text-format-toolbar .pcr-button { width: 24px; height: 24px; }
-        .toolbar-separator { width: 1px; height: 20px; background-color: #666; margin: 0 5px; }
+        
         #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,.8); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #333; font-size: 1.2rem; }
         .loader { border: 8px solid #f3f3f3; border-radius: 50%; border-top: 8px solid var(--primary-color); width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 1rem; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -819,16 +884,116 @@
         #floating-controls { position: fixed; bottom: 30px; left: 30px; z-index: 500; display: flex; flex-direction: column; gap: 10px; }
         #floating-controls button { width: 50px; height: 50px; border-radius: 50%; border: none; background-color: var(--primary-color); color: white; font-size: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.2s ease-in-out; }
         #floating-controls button:hover { background-color: #0056b3; transform: scale(1.1); }
+        #floating-controls button:disabled { background-color: #bdc3c7; cursor: not-allowed; transform: none; }
+
         /* END: Floating Action Buttons */
 
+        /* Toggle Switch Style */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; right: 0; left: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            right: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .switch input:checked + .switch-slider {
+            background-color: var(--primary-color, #2980b9);
+        }
+        .switch input:checked + .switch-slider:before {
+            transform: translateX(-22px);
+        }
     </style>
 </head>
-<body>
+<body style="visibility: hidden;"> <!-- 1. إخفاء المحتوى مبدئياً -->
+
+    <!-- ================================== -->
+    <!-- 🔥 Firebase Auth Guard STARTS HERE 🔥 -->
+    <!-- ================================== -->
+    <script type="module">
+        // استيراد الدوال اللازمة من Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 🚨 هام: استبدل هذا الكائن بالإعدادات الخاصة بمشروعك
+        const firebaseConfig = {
+  apiKey: "AIzaSyCq2p7-r7BzjgbmVvdl5YF2Dy9-lcmZrSo",
+  authDomain: "waraqa-8decf.firebaseapp.com",
+  projectId: "waraqa-8decf",
+  storageBucket: "waraqa-8decf.firebasestorage.app",
+  messagingSenderId: "458763676466",
+  appId: "1:458763676466:web:bd4c3bfb9b53fcd4d3852b",
+  measurementId: "G-N9MPM4VK00"
+};
+        
+        // تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // مراقبة حالة تسجيل الدخول
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // المستخدم مسجل دخوله، تحقق من صلاحيته في Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists() && userDocSnap.data().isAllowed === true) {
+                    // المستخدم مصرح له بالدخول
+                    // 2. إظهار محتوى الصفحة الآن بعد التأكد من الصلاحية
+                    document.body.style.visibility = 'visible';
+                } else {
+                    // المستخدم غير مصرح له
+                    // 3. توجيه فوري إلى صفحة الانتظار
+                    window.location.replace('subscribe.html');
+                }
+            } else {
+                // لا يوجد مستخدم مسجل
+                // 3. توجيه فوري إلى صفحة تسجيل الدخول
+                window.location.replace('login.html');
+            }
+        });
+    </script>
+    <!-- ================================ -->
+    <!-- 🔥 Firebase Auth Guard ENDS HERE 🔥 -->
+    <!-- ================================ -->
+
+    <!-- هنا تضع بقية محتوى صفحتك -->
+    <!-- مثال: <h1>محتوى الصفحة المحمية</h1> -->
+
+</body>
+
 
     <div id="landing-screen">
         <div class="landing-content">
             <h1>
-                <img src="assets/logo.png" alt=",ورقة" width="200px">
+                <img src="assets/waraqa-blue.svg" alt="ورقة" width="200px">
             </h1>
            
             <div class="landing-buttons">
@@ -844,11 +1009,20 @@
                 </a>
             </div>
         </div>
+        <footer style="display: block; width: 100%; clear: both; text-align:center; margin-top: 2rem; color: #888; font-size: 1rem;">
+            تم تصميم وبرمجة هذا البرنامج بواسطة عبدالرحمن زهران &mdash; جميع الحقوق محفوظة
+        </footer>
     </div>
     <div id="editor-screen" class="hidden">
+        <div id="global-controls">
+             <button id="home-btn" title="العودة للرئيسية"><i class="fas fa-home"></i></button>
+             <button id="sidebar-toggle-btn" title="إظهار/إخفاء لوحة التحكم"><i class="fas fa-bars"></i></button>
+             <button id="undo-btn" disabled title="تراجع"> <i class="fas fa-undo"></i></button>
+             <button id="redo-btn" disabled title="إعادة"> <i class="fas fa-redo"></i></button>
+        </div>
+
         <aside id="sidebar">
             <div class="sidebar-header">
-                <button id="home-btn" title="العودة للرئيسية"><i class="fas fa-home"></i></button>
                 <h3> <i class="fas fa-sliders"></i> لوحة التحكم </h3>
             </div>
             <div class="sidebar-content">
@@ -856,33 +1030,49 @@
                     <h4>إجراءات</h4>
                     <button id="save-pdf-btn" class="control-btn"> <i class="fas fa-file-pdf"></i> حفظ كـ PDF </button>
                     <button id="add-from-excel-btn" class="control-btn"> <i class="fas fa-file-import"></i> إضافة أسئلة من Excel </button>
+                    <button id="add-title-btn" class="control-btn"> <i class="fas fa-heading"></i> إضافة عنوان </button>
                     
                     <div class="control-btn-group">
                         <button id="add-question-btn" class="control-btn"> <i class="fas fa-plus"></i> إضافة سؤال اختياري </button>
                         <button id="question-defaults-settings-btn" class="settings-btn" title="الإعدادات الافتراضية للسؤال"> <i class="fas fa-cog"></i> </button>
                     </div>
 
-                    <button id="add-essay-question-btn" class="control-btn"> <i class="fas fa-pen-alt"></i> إضافة سؤال مقالي </button>
+                    <div class="control-btn-group">
+                        <button id="add-essay-question-btn" class="control-btn"> <i class="fas fa-pen-alt"></i> إضافة سؤال مقالي </button>
+                        <button id="essay-q-defaults-settings-btn" class="settings-btn" title="الإعدادات الافتراضية للسؤال المقالي"> <i class="fas fa-cog"></i> </button>
+                    </div>
+
                     <button id="add-q-header-btn" class="control-btn"> <i class="fas fa-heading"></i> إضافة رأس للأسئلة </button>
                     <button id="add-passage-btn" class="control-btn"> <i class="fas fa-file-alt"></i> إضافة قطعة قراءة </button>
                     <button id="add-poetry-btn" class="control-btn"> <i class="fas fa-feather-alt"></i> إضافة نص شعري </button>
                     <button id="add-watermark-btn" class="control-btn"> <i class="fas fa-stamp"></i> إضافة علامة مائية </button>
-                    <div class="undo-redo-group">
-                        <button id="undo-btn" class="control-btn small-btn" disabled> <i class="fas fa-undo"></i> تراجع </button>
-                        <button id="redo-btn" class="control-btn small-btn" disabled> <i class="fas fa-redo"></i> إعادة </button>
-                    </div>
                 </div>
                 <!-- START: Header and Footer Control Group -->
                  <div class="control-group">
                     <h4> <i class="fas fa-window-maximize"></i> تخصيص الهيدر والفوتر </h4>
-                    <div class="toggle-control"> <label for="toggle-header-visibility">عرض الهيدر</label> <input type="checkbox" id="toggle-header-visibility" checked> </div>
-                    <div class="toggle-control"> <label for="toggle-footer-visibility">عرض الفوتر</label> <input type="checkbox" id="toggle-footer-visibility" checked> </div>
+                    <div class="toggle-control">
+                        <label for="toggle-header-visibility">عرض الهيدر</label>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-header-visibility" checked>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-control">
+                        <label for="toggle-footer-visibility">عرض الفوتر</label>
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-footer-visibility" checked>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    <div class="slider-control"> <label for="header-logo-size">حجم الشعار في الهيدر <span class="slider-value"></span></label> <input type="range" id="header-logo-size" min="20" max="60" value="50"> </div>
                      <hr style="margin: 1rem 0;">
                     <div class="color-picker-grid">
                         <div class="color-control"> <label>خلفية الهيدر</label> <div class="color-picker" id="page-header-bg"></div> </div>
                         <div class="color-control"> <label>خلفية خانة الهيدر</label> <div class="color-picker" id="header-item-bg"></div> </div>
+                        <div class="color-control"> <label>نص الهيدر</label> <div class="color-picker" id="header-text-color-picker"></div> </div>
                         <div class="color-control"> <label>خلفية الفوتر</label> <div class="color-picker" id="page-footer-bg"></div> </div>
                         <div class="color-control"> <label>خلفية خانة الفوتر</label> <div class="color-picker" id="footer-item-bg"></div> </div>
+                        <div class="color-control"> <label>نص الفوتر</label> <div class="color-picker" id="footer-text-color-picker"></div> </div>
                     </div>
                 </div>
                 <!-- END: Header and Footer Control Group -->
@@ -931,9 +1121,6 @@
         </aside>
         <main id="main-content">
             <div id="pages-container"></div>
-            <div id="text-format-toolbar" class="hidden">
-                <button id="highlight-btn" title="تظليل النص"><i class="fas fa-highlighter"></i></button> <div class="toolbar-separator"></div> <button id="underline-btn" title="تسطير النص"><i class="fas fa-underline"></i></button> <div class="toolbar-separator"></div> <button id="align-right-btn" data-align="justifyRight" title="محاذاة لليمين"><i class="fas fa-align-right"></i></button> <button id="align-center-btn" data-align="justifyCenter" title="توسيط"><i class="fas fa-align-center"></i></button> <button id="align-left-btn" data-align="justifyLeft" title="محاذاة لليسار"><i class="fas fa-align-left"></i></button> <button id="align-justify-btn" data-align="justifyFull" title="ضبط"><i class="fas fa-align-justify"></i></button>
-            </div>
         </main>
         
         <!-- START: Floating Controls -->
@@ -948,40 +1135,43 @@
     <!-- Modals and Context Menus -->
     <div id="custom-context-menu" class="hidden">
         <ul>
-            <li id="ctx-delete-header" class="danger hidden"><i class="fas fa-trash"></i> <span>حذف العنوان</span></li>
+            <li id="ctx-move-up"><i class="fas fa-arrow-up"></i> <span>نقل لأعلى</span></li>
+            <li id="ctx-move-down"><i class="fas fa-arrow-down"></i> <span>نقل لأسفل</span></li>
             <li id="ctx-set-page-number" class="hidden"><i class="fas fa-sort-numeric-down"></i> <span>بدء ترقيم الصفحات من...</span></li>
+            <li id="ctx-separator-hf" class="hidden"><hr></li>
             <li id="ctx-add-hf-box" class="hidden"><i class="fas fa-plus"></i> <span>إضافة خانة</span></li>
+            <li id="ctx-replace-with-logo" class="hidden"><i class="fas fa-image"></i> <span>استبدال بشعار</span></li>
             <li id="ctx-delete-hf-box" class="danger hidden"><i class="fas fa-trash"></i> <span>حذف الخانة</span></li>
-            <li id="ctx-hf-separator" class="hidden"><hr></li>
+            <li id="ctx-delete-all-hf-boxes" class="danger hidden"><i class="fas fa-exclamation-triangle"></i> <span>حذف كل الخانات</span></li>
+            <li id="ctx-separator-1" class="hidden"><hr></li>
+            <li id="ctx-add-speaker" class="hidden"><i class="fas fa-user-edit"></i> <span>إضافة/تعديل القائل</span></li>
+            <li id="ctx-delete-speaker" class="danger hidden"><i class="fas fa-user-slash"></i> <span>حذف القائل</span></li>
             <li id="ctx-upload-image" class="hidden"><i class="fas fa-upload"></i> <span>إضافة/تغيير صورة (من الجهاز)</span></li>
             <li id="ctx-add-image-url" class="hidden"><i class="fas fa-link"></i> <span>إضافة/تغيير صورة (من رابط)</span></li>
             <li id="ctx-delete-image" class="hidden"><i class="fas fa-trash-alt"></i> <span>حذف الصورة</span></li>
             <li id="ctx-add-statement" class="hidden"><i class="fas fa-quote-left"></i> <span>إضافة/تعديل عبارة</span></li>
             <li id="ctx-delete-statement" class="hidden"><i class="fas fa-trash-alt"></i> <span>حذف العبارة</span></li>
-            <li id="ctx-toggle-kashida" class="hidden"><i class="fas fa-text-width"></i> <span>تفعيل/إلغاء تمديد النص/span></li>
-            <li id="ctx-separator-1" class="hidden"><hr></li>
+            <li id="ctx-toggle-kashida" class="hidden"><i class="fas fa-text-width"></i> <span>تمديد/إلغاء تمديد النص</span></li>
+            <li id="ctx-separator-2" class="hidden"><hr></li>
             <li id="ctx-change-layout" class="hidden"> <i class="fas fa-th-large"></i> <span>تعديل نمط الإجابات</span> <ul id="ctx-layout-submenu"> 
-                <li data-layout="1">
-                    <img src="assets/icons/layout1.svg" alt="نمط 1" style="width: 1em; vertical-align: middle; margin-left: 0.5em;">
-                    نمط 1 (عمودي)
-                </li>
-                <li data-layout="2">
-                    <img src="assets/icons/layout2.svg" alt="نمط 2" style="width: 1em; vertical-align: middle; margin-left: 0.5em;">
-                    نمط 2 (عمودان)
-                </li>
-                <li data-layout="3">
-                    <img src="assets/icons/layout3.svg" alt="نمط 3" style="width: 1em; vertical-align: middle; margin-left: 0.5em;">
-                    نمط 3 (أفقي)
-                </li>
+                <li data-layout="1"><img src="assets/icons/layout1.svg" alt="Layout 1"><span>نمط 1 (عمودي)</span></li>
+                <li data-layout="2"><img src="assets/icons/layout2.svg" alt="Layout 2"><span>نمط 2 (عمودان)</span></li>
+                <li data-layout="3"><img src="assets/icons/layout3.svg" alt="Layout 3"><span>نمط 3 (أفقي)</span></li>
             </ul> </li>
             <li id="ctx-set-essay-lines" class="hidden"><i class="fas fa-bars"></i> <span>تحديد عدد أسطر الإجابة</span></li>
             <li id="ctx-set-start-number" class="hidden"><i class="fas fa-sort-numeric-down"></i> <span>بدء العد من رقم محدد...</span></li>
             <li id="ctx-cancel-restart-numbering" class="hidden"><i class="fas fa-times"></i> <span>إلغاء العد المخصص</span></li>
-            <li id="ctx-separator-2" class="hidden"><hr></li>
-            <li id="ctx-move-up"><i class="fas fa-arrow-up"></i> <span>نقل لأعلى</span></li>
-            <li id="ctx-move-down"><i class="fas fa-arrow-down"></i> <span>نقل لأسفل</span></li>
-            <li id="ctx-separator-3"><hr></li>
+            <li id="ctx-separator-3" class="hidden"><hr></li>
             <li id="ctx-delete-item" class="danger"><i class="fas fa-times-circle"></i> <span>حذف العنصر</span></li>
+        </ul>
+    </div>
+    <div id="text-format-context-menu" class="hidden">
+        <ul>
+            <li id="text-ctx-bold"><i class="fas fa-bold"></i> <span>عريض</span></li>
+            <li id="text-ctx-italic"><i class="fas fa-italic"></i> <span>مائل</span></li>
+            <li id="text-ctx-underline"><i class="fas fa-underline"></i> <span>تسطير</span></li>
+            <li id="text-ctx-highlight"><i class="fas fa-highlighter"></i> <span>تظليل</span></li>
+            <li id="text-ctx-remove-format" class="danger"><i class="fas fa-eraser"></i> <span>إزالة التنسيق</span></li>
         </ul>
     </div>
     <div id="custom-prompt-overlay" class="hidden">
@@ -997,10 +1187,10 @@
     </div>
     <div id="reading-passage-prompt-overlay" class="hidden">
         <div id="reading-passage-prompt">
-            <h4>إضافة قطعة قراءة</h4>
-            <p>أدخل نص القطعة وحدد عدد الأسئلة المرتبطة بها.</p>
+            <h4 id="passage-prompt-title">إضافة قطعة قراءة</h4>
+            <p id="passage-prompt-p">أدخل نص القطعة (كل فقرة في سطر جديد) وحدد عدد الأسئلة المرتبطة بها.</p>
             <textarea id="passage-prompt-text" placeholder="أدخل نص قطعة القراءة هنا..."></textarea>
-            <input type="number" id="passage-prompt-q-count" placeholder="عدد الأسئلة" min="1" value="1">
+            <input type="number" id="passage-prompt-q-count" placeholder="عدد الأسئلة" min="0" value="1">
             <div class="prompt-buttons">
                 <button id="passage-prompt-cancel">إلغاء</button>
                 <button id="passage-prompt-ok">أضف</button>
@@ -1012,9 +1202,12 @@
             <h4>إضافة نص شعري</h4>
             <p>أدخل النص الشعري، افصل بين الشطرين بمسافة طويلة (مسطرة مرتين أو أكثر) وأدخل كل بيت في سطر جديد. ثم حدد عدد الأسئلة المرتبطة به.</p>
             <textarea id="poetry-prompt-text" placeholder="الشطر الأول   الشطر الثاني..."></textarea>
-            <div class="kashida-toggle-container"><label for="poetry-prompt-kashida-toggle">تفعيل تمديد النص</label>
-                <input type="checkbox" id="poetry-prompt-kashida-toggle" checked>
-                
+            <div class="kashida-toggle-container">
+                <label for="poetry-prompt-kashida-toggle">تفعيل تمديد النص</label>
+                <label class="switch">
+                    <input type="checkbox" id="poetry-prompt-kashida-toggle" checked>
+                    <span class="switch-slider"></span>
+                </label>
             </div>
             <input type="number" id="poetry-prompt-q-count" placeholder="عدد الأسئلة" min="0" value="1">
             <div class="prompt-buttons">
@@ -1060,35 +1253,23 @@
     <!-- START: Question Defaults Prompt -->
     <div id="question-defaults-prompt-overlay" class="hidden">
         <div id="question-defaults-prompt">
-            <h4>إعدادات السؤال الافتراضية</h4>
+            <h4>إعدادات السؤال الاختياري الافتراضية</h4>
             <div class="prompt-setting-group">
                 <h5>العبارة التمهيدية</h5>
                 <div class="toggle-control">
                     <label for="default-statement-toggle">إضافة عبارة تمهيدية مع كل سؤال جديد</label>
-                    <input type="checkbox" id="default-statement-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="default-statement-toggle">
+                        <span class="switch-slider"></span>
+                    </label>
                 </div>
             </div>
              <div class="prompt-setting-group">
                 <h5>نمط الإجابات الافتراضي</h5>
                 <div id="default-layout-selector">
-                    <span>
-                        <input type="radio" id="default-layout-1" name="default-layout" value="1">
-                        <label for="default-layout-1">
-                            <img src="assets/icons/layout1.svg" alt="نمط عمودي">عمودي
-                        </label>
-                    </span>
-                     <span>
-                        <input type="radio" id="default-layout-2" name="default-layout" value="2">
-                        <label for="default-layout-2">
-                             <img src="assets/icons/layout2.svg" alt="نمط عمودان">عمودان
-                        </label>
-                    </span>
-                     <span>
-                        <input type="radio" id="default-layout-3" name="default-layout" value="3">
-                        <label for="default-layout-3">
-                             <img src="assets/icons/layout3.svg" alt="نمط أفقي">أفقي
-                        </label>
-                    </span>
+                    <span><input type="radio" id="default-layout-1" name="default-layout" value="1"><label for="default-layout-1"><img src="assets/icons/layout1.svg" alt="نمط عمودي">عمودي</label></span>
+                    <span><input type="radio" id="default-layout-2" name="default-layout" value="2"><label for="default-layout-2"><img src="assets/icons/layout2.svg" alt="نمط عمودان">عمودان</label></span>
+                    <span><input type="radio" id="default-layout-3" name="default-layout" value="3"><label for="default-layout-3"><img src="assets/icons/layout3.svg" alt="نمط أفقي">أفقي</label></span>
                 </div>
             </div>
             <div class="prompt-buttons">
@@ -1098,6 +1279,31 @@
         </div>
     </div>
     <!-- END: Question Defaults Prompt -->
+    <!-- START: Essay Question Defaults Prompt -->
+    <div id="essay-q-defaults-prompt-overlay" class="hidden">
+        <div id="essay-q-defaults-prompt">
+            <h4>إعدادات السؤال المقالي الافتراضية</h4>
+            <div class="prompt-setting-group">
+                <h5>العبارة التمهيدية</h5>
+                <div class="toggle-control">
+                    <label for="essay-default-statement-toggle">إضافة عبارة تمهيدية مع كل سؤال جديد</label>
+                    <label class="switch">
+                        <input type="checkbox" id="essay-default-statement-toggle">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+             <div class="prompt-setting-group">
+                <h5>عدد أسطر الإجابة</h5>
+                 <input type="number" id="essay-default-lines" min="1" max="15" value="2">
+            </div>
+            <div class="prompt-buttons">
+                <button id="essay-q-defaults-prompt-cancel">إلغاء</button>
+                <button id="essay-q-defaults-prompt-ok">حفظ</button>
+            </div>
+        </div>
+    </div>
+    <!-- END: Essay Question Defaults Prompt -->
     
     <div id="loader-overlay" class="hidden"> <div class="loader"></div> <p>جاري تحويل الصفحات إلى صور...</p> </div>
     <input type="file" id="image-upload-input" accept="image/*" style="display:none">
@@ -1132,6 +1338,11 @@
                 defaultLayout: '3'
             };
 
+            let newEssayQuestionDefaults = {
+                includeStatement: false,
+                defaultLines: 2,
+            };
+
             let kashidaObserver;
             let canvas, ctx;
             const kashida = '\u0640';
@@ -1146,12 +1357,15 @@
             const imageUploadInput = document.getElementById("image-upload-input");
             const startFromScratchBtn = document.getElementById("start-from-scratch-btn");
             const homeBtn = document.getElementById("home-btn");
+            const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
             const pagesContainer = document.getElementById("pages-container");
             const savePdfBtn = document.getElementById("save-pdf-btn");
             const addFromExcelBtn = document.getElementById("add-from-excel-btn");
+            const addTitleBtn = document.getElementById("add-title-btn");
             const addQuestionBtn = document.getElementById("add-question-btn");
             const qDefaultsSettingsBtn = document.getElementById('question-defaults-settings-btn');
             const addEssayQuestionBtn = document.getElementById("add-essay-question-btn");
+            const essayQDefaultsSettingsBtn = document.getElementById('essay-q-defaults-settings-btn');
             const addQHeaderBtn = document.getElementById("add-q-header-btn");
             const addPassageBtn = document.getElementById("add-passage-btn");
             const addPoetryBtn = document.getElementById("add-poetry-btn");
@@ -1159,6 +1373,7 @@
             const undoBtn = document.getElementById("undo-btn");
             const redoBtn = document.getElementById("redo-btn");
             const contextMenu = document.getElementById("custom-context-menu");
+            const textFormatContextMenu = document.getElementById("text-format-context-menu");
             const loader = document.getElementById("loader-overlay");
             const loaderText = loader.querySelector("p");
             const customPromptOverlay = document.getElementById("custom-prompt-overlay");
@@ -1166,7 +1381,7 @@
             const poetryPromptOverlay = document.getElementById("poetry-prompt-overlay");
             const watermarkPromptOverlay = document.getElementById('watermark-prompt-overlay');
             const qDefaultsPromptOverlay = document.getElementById('question-defaults-prompt-overlay');
-            const textFormatToolbar = document.getElementById("text-format-toolbar");
+            const essayQDefaultsPromptOverlay = document.getElementById('essay-q-defaults-prompt-overlay');
             const mainContent = document.getElementById("main-content");
             const toggleHeaderCheckbox = document.getElementById('toggle-header-visibility');
             const toggleFooterCheckbox = document.getElementById('toggle-footer-visibility');
@@ -1185,10 +1400,13 @@
                 imageUploadInput.addEventListener("change", handleImageFileUpload);
                 startFromScratchBtn.addEventListener("click", startFromScratch);
                 homeBtn.addEventListener("click", goHome);
+                sidebarToggleBtn.addEventListener("click", () => editorScreen.classList.toggle('sidebar-hidden'));
                 savePdfBtn.addEventListener("click", saveAsPDF);
+                addTitleBtn.addEventListener("click", addNewTitle);
                 addQuestionBtn.addEventListener("click", addNewQuestion);
                 qDefaultsSettingsBtn.addEventListener('click', showQuestionDefaultsPrompt);
                 addEssayQuestionBtn.addEventListener("click", addNewEssayQuestion);
+                essayQDefaultsSettingsBtn.addEventListener('click', showEssayQuestionDefaultsPrompt);
                 addQHeaderBtn.addEventListener("click", addQuestionHeader);
                 addPassageBtn.addEventListener("click", showReadingPassagePrompt);
                 addPoetryBtn.addEventListener("click", showPoetryPrompt); 
@@ -1208,77 +1426,76 @@
                 setupStyleControls();
                 setupContextMenuListeners();
                 setupAllPrompts();
-                setupTextFormatToolbar();
                 setupKashidaInfrastructure();
                 
                 // General UI Listeners
                 mainContent.addEventListener('contextmenu', handleMainContentContextMenu);
                 document.addEventListener("click", hideMenusOnClickOutside);
-                window.addEventListener("scroll", () => textFormatToolbar.classList.add("hidden"));
             }
 
             function setupAllPrompts() {
-                document.getElementById('passage-prompt-ok').addEventListener('click', () => { const text = document.getElementById('passage-prompt-text').value; const qCount = parseInt(document.getElementById('passage-prompt-q-count').value, 10) || 0; if(text && qCount > 0) addReadingPassage(text, qCount); passagePromptOverlay.classList.add('hidden'); });
+                document.getElementById('passage-prompt-ok').addEventListener('click', handlePassagePromptOk);
                 document.getElementById('passage-prompt-cancel').addEventListener('click', () => passagePromptOverlay.classList.add('hidden'));
                 
-                document.getElementById('poetry-prompt-ok').addEventListener('click', () => { const text = document.getElementById('poetry-prompt-text').value; const qCount = parseInt(document.getElementById('poetry-prompt-q-count').value, 10) || 0; const useKashida = document.getElementById('poetry-prompt-kashida-toggle').checked; if (text.trim() && qCount >= 0) addPoeticText(text, qCount, useKashida); poetryPromptOverlay.classList.add('hidden'); });
+                document.getElementById('poetry-prompt-ok').addEventListener('click', () => { const text = document.getElementById('poetry-prompt-text').value; const qCount = parseInt(document.getElementById('poetry-prompt-q-count').value, 10) || 0; const useKashida = document.getElementById('poetry-prompt-kashida-toggle').checked; if (text.trim()) addPoeticText(text, qCount, useKashida); poetryPromptOverlay.classList.add('hidden'); });
                 document.getElementById('poetry-prompt-cancel').addEventListener('click', () => poetryPromptOverlay.classList.add('hidden'));
 
                 setupWatermarkPromptListeners();
 
                 document.getElementById('q-defaults-prompt-ok').addEventListener('click', applyQuestionDefaults);
                 document.getElementById('q-defaults-prompt-cancel').addEventListener('click', () => qDefaultsPromptOverlay.classList.add('hidden'));
+
+                document.getElementById('essay-q-defaults-prompt-ok').addEventListener('click', applyEssayQuestionDefaults);
+                document.getElementById('essay-q-defaults-prompt-cancel').addEventListener('click', () => essayQDefaultsPromptOverlay.classList.add('hidden'));
             }
 
             function showQuestionDefaultsPrompt() {
                 document.getElementById('default-statement-toggle').checked = newQuestionDefaults.includeStatement;
                 const layoutRadio = document.querySelector(`#default-layout-selector input[value="${newQuestionDefaults.defaultLayout}"]`);
-                if (layoutRadio) {
-                    layoutRadio.checked = true;
-                }
+                if (layoutRadio) layoutRadio.checked = true;
                 qDefaultsPromptOverlay.classList.remove('hidden');
             }
 
             function applyQuestionDefaults() {
                 newQuestionDefaults.includeStatement = document.getElementById('default-statement-toggle').checked;
                 const selectedLayout = document.querySelector('#default-layout-selector input:checked');
-                if (selectedLayout) {
-                    newQuestionDefaults.defaultLayout = selectedLayout.value;
-                }
+                if (selectedLayout) newQuestionDefaults.defaultLayout = selectedLayout.value;
                 qDefaultsPromptOverlay.classList.add('hidden');
+                recordState("Update MCQ Defaults");
             }
             
-            function applyZoom(newLevel) { if (newLevel >= 0.5 && newLevel <= 2.0) { currentZoomLevel = newLevel; pagesContainer.style.transform = `scale(${currentZoomLevel})`; } }
+            function showEssayQuestionDefaultsPrompt() {
+                document.getElementById('essay-default-statement-toggle').checked = newEssayQuestionDefaults.includeStatement;
+                document.getElementById('essay-default-lines').value = newEssayQuestionDefaults.defaultLines;
+                essayQDefaultsPromptOverlay.classList.remove('hidden');
+            }
             
-            function toggleFullscreen() { if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(err => { console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`); }); } else { if(document.exitFullscreen) document.exitFullscreen(); } }
-            
+            function applyEssayQuestionDefaults() {
+                newEssayQuestionDefaults.includeStatement = document.getElementById('essay-default-statement-toggle').checked;
+                const lines = parseInt(document.getElementById('essay-default-lines').value, 10);
+                if (!isNaN(lines) && lines > 0) newEssayQuestionDefaults.defaultLines = lines;
+                essayQDefaultsPromptOverlay.classList.add('hidden');
+                recordState("Update Essay Q Defaults");
+            }
+
+            function applyZoom(newLevel) { if (newLevel >= 0.2 && newLevel <= 3.0) { currentZoomLevel = newLevel; pagesContainer.style.transform = `scale(${currentZoomLevel})`; } }
+            function toggleFullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`)); else if (document.exitFullscreen) document.exitFullscreen(); }
             function handleFullscreenChange() { const icon = fullscreenBtn.querySelector('i'); const isFullscreen = !!document.fullscreenElement; icon.classList.toggle('fa-expand', !isFullscreen); icon.classList.toggle('fa-compress', isFullscreen); fullscreenBtn.title = isFullscreen ? "الخروج من وضع ملء الشاشة" : "وضع ملء الشاشة"; }
-            
             function goHome() { editorScreen.classList.add("hidden"); landingScreen.classList.remove("hidden"); }
-            
             function showEditor() { landingScreen.classList.add("hidden"); editorScreen.classList.remove("hidden"); }
 
             function handleExcelFile(e) {
-                const file = e.target.files[0];
-                if (!file) return;
+                const file = e.target.files[0]; if (!file) return;
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     try {
-                        const data = new Uint8Array(event.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const sheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[sheetName];
+                        const data = new Uint8Array(event.target.result); const workbook = XLSX.read(data, { type: 'array' });
+                        const sheetName = workbook.SheetNames[0]; const worksheet = workbook.Sheets[sheetName];
                         const json = XLSX.utils.sheet_to_json(worksheet);
-
-                        if (excelImportMode === 'append') {
-                            appendQuestions(json);
-                        } else {
-                            parseAndLoadQuestions(json);
-                        }
+                        if (excelImportMode === 'append') appendQuestions(json);
+                        else parseAndLoadQuestions(json);
                         showEditor();
-                    } catch (err) {
-                        console.error("Error processing Excel file:", err);
-                        alert("حدث خطأ أثناء معالجة ملف Excel. يرجى التأكد من أن الملف غير تالف وبالتنسيق الصحيح.");
+                    } catch (err) { console.error("Error processing Excel file:", err); alert("حدث خطأ أثناء معالجة ملف Excel.");
                     } finally { e.target.value = ''; }
                 };
                 reader.readAsArrayBuffer(file);
@@ -1287,11 +1504,10 @@
             function startFromScratch() {
                 pageContent = [];
                 startPageNumber = 1;
-                renderAll();
-                showEditor();
+                renderAll(); showEditor();
                 recordState("Initial empty state");
             }
-
+            
             function mapJsonToPageContent(data) {
                  return data.map((row, index) => ({
                     elementType: 'question', id: `q-${Date.now()}-${index}`, question: row['السؤال'] || "نص السؤال فارغ",
@@ -1299,120 +1515,222 @@
                     statement: row['العبارة'] || null, image: row['الصورة'] || null, layoutType: row['النوع'] || 3, restartNumbering: row['بدء عد جديد'] ? 1 : false
                 }));
             }
-            
             function parseAndLoadQuestions(data) { pageContent = mapJsonToPageContent(data); startPageNumber = 1; renderAll(); recordState("Load from Excel"); }
             function appendQuestions(data) { const newItems = mapJsonToPageContent(data); pageContent = pageContent.concat(newItems); renderAll(); recordState("Append from Excel"); }
-
+            
             function renderAll() {
                 pagesContainer.innerHTML = "";
-                let headerText = "أضف عنواناً";
-                const firstPageHeader = document.querySelector('.page-title');
-                if(firstPageHeader) headerText = firstPageHeader.innerHTML;
-                
                 if (kashidaObserver) kashidaObserver.disconnect();
-                if (pageContent.length === 0) {
-                    let page = addNewPage();
-                    const header = createPageHeader(headerText);
-                    page.prepend(header);
-                    updatePageNumbers();
-                    updateAllWatermarks(); 
-                    return;
-                }
                 
                 let questionCounter = 1;
-                const elements = pageContent.map((item) => {
+                const elementsToRender = [];
+
+                pageContent.forEach(item => {
+                    if (item.restartNumbering !== false && !isNaN(parseInt(item.restartNumbering, 10))) {
+                        questionCounter = parseInt(item.restartNumbering, 10);
+                    }
+                    
                     let element;
-                    if (item.restartNumbering !== false && !isNaN(parseInt(item.restartNumbering, 10))) questionCounter = parseInt(item.restartNumbering, 10);
+                    let topLevelElementContainer = document.createElement('div'); // A container to hold the item and its potential speaker
+                    
+                    // The speaker for passages and poetry is rendered above the main element.
+                    if ((item.elementType === 'readingPassage' || item.elementType === 'poeticText') && item.speaker) {
+                       topLevelElementContainer.appendChild(createSpeakerElement(item));
+                    }
+                    
                     switch(item.elementType) {
+                        case 'pageTitle': element = createPageTitleElement(item); break;
                         case 'question': element = createQuestionElement(item, questionCounter); questionCounter++; break;
                         case 'essayQuestion': element = createEssayQuestionElement(item, questionCounter); questionCounter++; break;
                         case 'questionHeader': element = createQuestionHeaderElement(item); break;
                         case 'readingPassage': element = createReadingPassageElement(item); break;
                         case 'poeticText': element = createPoeticTextElement(item); break;
                     }
-                    return element;
+                    
+                    if (element) {
+                        topLevelElementContainer.appendChild(element);
+                        elementsToRender.push(topLevelElementContainer);
+                    }
                 });
 
                 let currentPage = addNewPage();
-                const header = createPageHeader(headerText);
-                currentPage.prepend(header);
-                
-                let currentHeight = header.offsetHeight + (parseFloat(getComputedStyle(header).marginBottom) || 0);
-                const pageHeightLimit = 970;
+                let currentHeight = 20; 
+                const pageHeightLimit = 970; // A4 page effective height in pixels
 
-                elements.forEach(el => {
-                    if (!el) return;
-                    currentPage.appendChild(el);
-                    const elStyle = getComputedStyle(el);
-                    const elHeight = el.offsetHeight + parseFloat(elStyle.marginTop || 0) + parseFloat(elStyle.marginBottom || 0);
-                    if (currentHeight + elHeight > pageHeightLimit && currentPage.childElementCount > 5) { // title, header, footer, pageNum, watermark
-                        currentPage.removeChild(el); currentPage = addNewPage(); currentPage.appendChild(el); currentHeight = el.offsetHeight;
-                    } else { currentHeight += elHeight; }
+                elementsToRender.forEach(elContainer => {
+                    currentPage.appendChild(elContainer);
+                    const elStyle = getComputedStyle(elContainer);
+                    const elHeight = elContainer.offsetHeight + parseFloat(elStyle.marginTop || 0) + parseFloat(elStyle.marginBottom || 0);
+
+                    if (currentHeight + elHeight > pageHeightLimit && currentPage.childElementCount > 4) { // Prevents creating new page for just header/footer etc.
+                        currentPage.removeChild(elContainer); 
+                        currentPage = addNewPage(); 
+                        currentPage.appendChild(elContainer); 
+                        currentHeight = elHeight;
+                    } else {
+                        currentHeight += elHeight;
+                    }
                 });
+                
                 updatePageNumbers();
                 updateAllWatermarks();
                 
+                // Re-observe kashida elements after rendering
                 pagesContainer.querySelectorAll('.poetry-wrapper').forEach(wrapper => {
                     const item = pageContent.find(p => p.id === wrapper.dataset.itemId);
                     if (item && item.useKashida) {
-                         wrapper.querySelectorAll('.poetry-shatr').forEach(shatr => kashidaObserver.observe(shatr));
+                        wrapper.querySelectorAll('.poetry-shatr').forEach(shatr => kashidaObserver.observe(shatr));
                     }
                 });
             }
 
-            function createPageHeader(text) {
-                const header = document.createElement("div"); header.className = "page-title"; header.setAttribute("contenteditable", "true"); header.innerHTML = text;
+            function createPageTitleElement(item) {
+                const header = document.createElement("div"); header.className = "page-title"; header.id = item.id; header.dataset.itemId = item.id;
+                header.setAttribute("contenteditable", "true"); header.innerHTML = item.text;
+                header.dataset.prop = 'text'; header.addEventListener("blur", (e) => handleTextEdit(e, item.id));
                 return header;
             }
 
             function createQuestionElement(question, number) {
                 const wrapper = document.createElement("div"); wrapper.className = "question-wrapper"; wrapper.id = question.id; wrapper.dataset.itemId = question.id;
+                
+                let statementSpeakerBlock = '';
+                if (question.statement || question.speaker) {
+                    statementSpeakerBlock = `
+                    <div class="statement-speaker-line">
+                         ${question.speaker ? createSpeakerElement(question).outerHTML : ''}
+                        ${question.statement ? `<div class="statement-text" contenteditable="true" data-prop="statement">${question.statement}</div>` : '<div style="flex-grow: 1;"></div>'}
+                    </div>`;
+                }
+
                 wrapper.innerHTML = `
-                    <div class="question-header">
-                        <div class="question-body">
-                            ${question.statement ? `<div class="statement-text" contenteditable="true" data-prop="statement">${question.statement}</div>` : ''}
-                            <div class="question-line"> <span class="question-number">${number}</span> <div class="question-text" contenteditable="true" data-prop="question">${question.question}</div> </div>
+                    <div class="question-main-content">
+                        <div class="question-header">
+                            <div class="question-body">
+                                ${statementSpeakerBlock}
+                                <div class="question-line"> <span class="question-number">${number}</span> <div class="question-text" contenteditable="true" data-prop="question">${question.question}</div> </div>
+                            </div>
+                            <div class="answers-container answers-layout-${question.layoutType}">
+                                <div class="answer-option"><div class="answer-head">أ</div><div class="answer-text" contenteditable="true" data-prop="answers.a">${question.answers.a}</div></div>
+                                <div class="answer-option"><div class="answer-head">ب</div><div class="answer-text" contenteditable="true" data-prop="answers.b">${question.answers.b}</div></div>
+                                <div class="answer-option"><div class="answer-head">ج</div><div class="answer-text" contenteditable="true" data-prop="answers.c">${question.answers.c}</div></div>
+                                <div class="answer-option"><div class="answer-head">د</div><div class="answer-text" contenteditable="true" data-prop="answers.d">${question.answers.d}</div></div>
+                            </div>
                         </div>
-                        <div class="answers-container answers-layout-${question.layoutType}">
-                            <div class="answer-option"><div class="answer-head">أ</div><div class="answer-text" contenteditable="true" data-prop="answers.a">${question.answers.a}</div></div>
-                            <div class="answer-option"><div class="answer-head">ب</div><div class="answer-text" contenteditable="true" data-prop="answers.b">${question.answers.b}</div></div>
-                            <div class="answer-option"><div class="answer-head">ج</div><div class="answer-text" contenteditable="true" data-prop="answers.c">${question.answers.c}</div></div>
-                            <div class="answer-option"><div class="answer-head">د</div><div class="answer-text" contenteditable="true" data-prop="answers.d">${question.answers.d}</div></div>
-                        </div>
-                    </div>
-                    ${question.image ? `<img src="${question.image}" alt="صورة السؤال" class="question-image">` : ''}`;
-                wrapper.querySelectorAll("[contenteditable]").forEach(el => { el.addEventListener("blur", (e) => handleTextEdit(e, question.id)); el.addEventListener("mouseup", showFormatToolbar); });
+                        ${question.image ? `<img src="${question.image}" alt="صورة السؤال" class="question-image">` : ''}
+                    </div>`;
+                wrapper.querySelectorAll("[contenteditable]").forEach(el => el.addEventListener("blur", (e) => handleTextEdit(e, question.id)));
+                wrapper.querySelectorAll(".speaker-name").forEach(el => el.addEventListener("blur", (e) => handleSpeakerEdit(e)));
                 return wrapper;
             }
             
             function createEssayQuestionElement(question, number) {
                 const wrapper = document.createElement("div"); wrapper.className = "question-wrapper"; wrapper.id = question.id; wrapper.dataset.itemId = question.id;
                 let linesHtml = ''; for (let i = 0; i < (question.lines || 2); i++) linesHtml += '<div class="essay-answer-line"></div>';
+
+                let statementSpeakerBlock = '';
+                if (question.statement || question.speaker) {
+                    statementSpeakerBlock = `
+                    <div class="statement-speaker-line">
+                        ${question.speaker ? createSpeakerElement(question).outerHTML : ''}
+                        ${question.statement ? `<div class="statement-text" contenteditable="true" data-prop="statement">${question.statement}</div>` : '<div style="flex-grow: 1;"></div>'}
+                     </div>`;
+                }
+                
                 wrapper.innerHTML = `
-                    <div class="question-header">
-                        <div class="question-body">
-                            ${question.statement ? `<div class="statement-text" contenteditable="true" data-prop="statement">${question.statement}</div>` : ''}
-                            <div class="question-line"> <span class="question-number">${number}</span> <div class="question-text" contenteditable="true" data-prop="question">${question.question}</div> </div>
-                            <div class="essay-answer-lines"> ${linesHtml} </div>
+                    <div class="question-main-content">
+                        <div class="question-header">
+                            <div class="question-body">
+                                ${statementSpeakerBlock}
+                                <div class="question-line"> <span class="question-number">${number}</span> <div class="question-text" contenteditable="true" data-prop="question">${question.question}</div> </div>
+                                <div class="essay-answer-lines"> ${linesHtml} </div>
+                            </div>
                         </div>
-                    </div>
-                    ${question.image ? `<img src="${question.image}" alt="صورة السؤال" class="question-image">` : ''}`;
-                wrapper.querySelectorAll("[contenteditable]").forEach(el => { el.addEventListener("blur", (e) => handleTextEdit(e, question.id)); el.addEventListener("mouseup", showFormatToolbar); });
+                        ${question.image ? `<img src="${question.image}" alt="صورة السؤال" class="question-image">` : ''}
+                    </div>`;
+                wrapper.querySelectorAll("[contenteditable]").forEach(el => el.addEventListener("blur", (e) => handleTextEdit(e, question.id)));
+                wrapper.querySelectorAll(".speaker-name").forEach(el => el.addEventListener("blur", (e) => handleSpeakerEdit(e)));
                 return wrapper;
             }
+            
+            function createSpeakerElement(item) {
+                 const speakerDiv = document.createElement('div');
+                 speakerDiv.className = 'speaker-name';
+                 speakerDiv.setAttribute('contenteditable', 'true'); // Make speaker editable
+                 speakerDiv.dataset.itemId = item.id;
+                 speakerDiv.innerHTML = item.speaker || '';
+                 speakerDiv.addEventListener("blur", (e) => handleSpeakerEdit(e));
+                 const parentFSVar = { 'readingPassage': '--passage-text-fs', 'poeticText': '--poetry-text-fs', 'question': '--statement-fs', 'essayQuestion': '--statement-fs' }[item.elementType];
+                 if(parentFSVar) speakerDiv.style.fontSize = `calc(var(${parentFSVar}) * 0.9)`;
+                 return speakerDiv;
+            }
+
+            function handleSpeakerEdit(event) {
+                const speakerEl = event.target;
+                const itemId = speakerEl.dataset.itemId;
+                const item = pageContent.find(p => p.id === itemId);
+                if (item) {
+                    const newSpeakerText = speakerEl.textContent.trim();
+                    if (newSpeakerText) {
+                       item.speaker = newSpeakerText;
+                    } else {
+                       item.speaker = null; 
+                    }
+                    recordState("Edit Speaker Text");
+                    if (!newSpeakerText) renderAll(); // Re-render if speaker is removed to clear the space
+                }
+            }
+
 
             function createQuestionHeaderElement(item) {
-                const div = document.createElement('div'); div.className = 'question-list-header'; div.innerHTML = item.text; div.id = item.id;
-                div.dataset.itemId = item.id; div.setAttribute('contenteditable', 'true'); div.dataset.prop = 'text';
-                div.addEventListener("blur", (e) => handleTextEdit(e, item.id)); div.addEventListener("mouseup", showFormatToolbar); return div;
+                const div = document.createElement('div'); div.className = 'question-list-header'; div.id = item.id;
+                div.dataset.itemId = item.id; div.setAttribute('contenteditable', 'true'); div.dataset.prop = 'text'; div.innerHTML = item.text;
+                div.addEventListener("blur", (e) => handleTextEdit(e, item.id)); return div;
             }
             
             function createReadingPassageElement(item) {
-                const wrapper = document.createElement('div'); wrapper.className = 'reading-passage-wrapper'; wrapper.id = item.id; wrapper.dataset.itemId = item.id;
-                const passageText = document.createElement('div'); passageText.className = 'reading-passage-text'; passageText.setAttribute('contenteditable', 'true');
-                passageText.dataset.prop = 'text'; passageText.innerHTML = item.text; wrapper.appendChild(passageText);
-                passageText.addEventListener("blur", (e) => handleTextEdit(e, item.id)); passageText.addEventListener("mouseup", showFormatToolbar); return wrapper;
+                const wrapper = document.createElement('div');
+                wrapper.className = 'reading-passage-wrapper';
+                wrapper.id = item.id;
+                wrapper.dataset.itemId = item.id;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.setAttribute('contenteditable', 'true');
+                
+                // Convert array of text lines into <p> tags inside the div for better editing experience
+                contentDiv.innerHTML = (item.text || []).map(line => 
+                  `<p class="reading-passage-text"><span class="passage-num"></span>${line || '&nbsp;'}</p>`
+                ).join('');
+
+                contentDiv.addEventListener('blur', (e) => handlePassageEdit(e, item.id));
+                wrapper.appendChild(contentDiv);
+                return wrapper;
             }
+            
+            function handlePassageEdit(event, itemId) {
+                const contentDiv = event.target;
+                const item = pageContent.find(p => p.id === itemId);
+                if (!item) return;
+
+                // Extract text from each paragraph within the contenteditable div
+                const paragraphs = Array.from(contentDiv.querySelectorAll('p, div'));
+                const newTextArray = paragraphs.map(p => p.innerHTML).filter(t => t.trim().length > 0 && t.trim() !== '<br>');
+                
+                item.text = newTextArray;
+                recordState('Edit Passage Text');
+            }
+
+
+            function handlePassagePromptOk() {
+                // This function now only handles ADDING a new passage
+                const text = document.getElementById('passage-prompt-text').value;
+                const qCount = parseInt(document.getElementById('passage-prompt-q-count').value, 10) || 0;
+                if (text.trim()) {
+                    addReadingPassage(text, qCount);
+                }
+                passagePromptOverlay.classList.add('hidden');
+            }
+             
 
             function createPoeticTextElement(item) {
                 const wrapper = document.createElement('div'); wrapper.className = 'poetry-wrapper'; wrapper.id = item.id; wrapper.dataset.itemId = item.id;
@@ -1421,45 +1739,73 @@
                     const baitContainer = document.createElement('div'); baitContainer.className = 'poetry-bait';
                     const baitContent = document.createElement('div'); baitContent.className = 'poetry-bait-content';
                     const [shatr1Text, shatr2Text = ''] = baitText.split('|').map(s => s.trim());
-                    const shatr1 = document.createElement('div'); shatr1.className = 'poetry-shatr'; shatr1.setAttribute('contenteditable', 'true');
-                    shatr1.dataset.useKashida = item.useKashida; shatr1.textContent = shatr1Text;
-                    const shatr2 = document.createElement('div'); shatr2.className = 'poetry-shatr'; shatr2.setAttribute('contenteditable', 'true');
-                    shatr2.dataset.useKashida = item.useKashida; shatr2.textContent = shatr2Text;
-                    [shatr1, shatr2].forEach(shatr => { shatr.addEventListener('blur', () => handlePoetryEdit(item.id)); shatr.addEventListener("mouseup", showFormatToolbar); });
-                    baitContent.appendChild(shatr1); baitContent.appendChild(shatr2);
+                    baitContent.innerHTML = `
+                        <div class="poetry-shatr" contenteditable="true" data-use-kashida="${item.useKashida}">${shatr1Text}</div>
+                        <div class="poetry-shatr" contenteditable="true" data-use-kashida="${item.useKashida}">${shatr2Text}</div>`;
+                    baitContent.querySelectorAll('.poetry-shatr').forEach(shatr => shatr.addEventListener('blur', () => handlePoetryEdit(item.id)));
                     const baitNumber = document.createElement('span'); baitNumber.className = 'poetry-bait-number'; baitNumber.textContent = `(${index + 1})`;
                     baitContainer.appendChild(baitNumber); baitContainer.appendChild(baitContent); wrapper.appendChild(baitContainer);
                 }); return wrapper;
             }
             
             function handleHeaderFooterEdit(e) {
-                const box = e.target;
-                const type = box.dataset.hfType; // 'header' or 'footer'
+                const box = e.target.closest('.header-box, .footer-box');
+                if (!box) return;
+                const type = box.dataset.hfType; 
                 const index = parseInt(box.dataset.hfIndex, 10);
-                const newText = box.textContent;
-                headerFooterState[type].items[index].text = newText;
-                document.querySelectorAll(`.${'page-' + type} [data-hf-index='${index}']`).forEach(el => {
-                    if (el !== box) el.textContent = newText;
-                });
-                recordState("Edit Header/Footer Text");
+                const hfItem = headerFooterState[type].items[index];
+                
+                if (hfItem && !hfItem.isLogo) {
+                    hfItem.text = box.textContent;
+                    // Sync other pages
+                    document.querySelectorAll(`.${'page-' + type} [data-hf-index='${index}']:not([data-is-logo="true"])`).forEach(el => {
+                        if (el !== box) el.textContent = hfItem.text;
+                    });
+                    recordState("Edit Header/Footer Text");
+                }
             }
             
             function addNewPage() {
                 const page = document.createElement("div"); page.className = "page";
                 const header = document.createElement('div'); header.className = 'page-header';
-                headerFooterState.header.items.forEach((item, index) => {
-                    const box = document.createElement('div'); box.className = 'header-box'; box.textContent = item.text;
-                    box.contentEditable = true; box.dataset.hfType = 'header'; box.dataset.hfIndex = index;
-                    box.addEventListener('blur', handleHeaderFooterEdit); header.appendChild(box);
-                });
+                if(headerFooterState.header.items.length > 0){
+                    headerFooterState.header.items.forEach((item, index) => {
+                        const box = document.createElement('div');
+                        box.className = 'header-box';
+                        box.dataset.hfType = 'header';
+                        box.dataset.hfIndex = index;
+                        
+                        if(item.isLogo) {
+                            box.innerHTML = `<img src="${item.logoSrc}" alt="شعار">`;
+                            box.contentEditable = false;
+                            box.style.padding = '0';
+                            box.style.border = 'none'; 
+                            box.style.backgroundColor = 'transparent';
+                        } else {
+                            box.textContent = item.text;
+                            box.contentEditable = true;
+                            // Ensure styles are reset if element was previously a logo
+                            box.style.padding = '';
+                            box.style.border = '';
+                            box.style.backgroundColor = '';
+                        }
+                        box.addEventListener('blur', handleHeaderFooterEdit); header.appendChild(box);
+                    });
+                } else {
+                    header.style.border = "none";
+                }
                 page.appendChild(header);
                 
                 const footer = document.createElement('div'); footer.className = 'page-footer';
-                headerFooterState.footer.items.forEach((item, index) => {
-                    const box = document.createElement('div'); box.className = 'footer-box'; box.textContent = item.text;
-                    box.contentEditable = true; box.dataset.hfType = 'footer'; box.dataset.hfIndex = index;
-                    box.addEventListener('blur', handleHeaderFooterEdit); footer.appendChild(box);
-                });
+                if(headerFooterState.footer.items.length > 0) {
+                    headerFooterState.footer.items.forEach((item, index) => {
+                        const box = document.createElement('div'); box.className = 'footer-box'; box.textContent = item.text;
+                        box.contentEditable = true; box.dataset.hfType = 'footer'; box.dataset.hfIndex = index;
+                        box.addEventListener('blur', handleHeaderFooterEdit); footer.appendChild(box);
+                    });
+                } else {
+                    footer.style.border = "none";
+                }
                 page.appendChild(footer);
 
                 const pageNumDiv = document.createElement('div'); pageNumDiv.className = 'page-number';
@@ -1468,112 +1814,73 @@
                 return page;
             }
 
-            function updatePageNumbers() { document.querySelectorAll(".page").forEach((page, index) => { const footer = page.querySelector(".page-number"); if (footer) footer.textContent = index + startPageNumber; }); }
+            function updatePageNumbers() { document.querySelectorAll(".page").forEach((page, index) => { const pageNumDiv = page.querySelector(".page-number"); if (pageNumDiv) pageNumDiv.textContent = index + startPageNumber; }); }
             
+            function addNewTitle() {
+                const newTitle = { elementType: 'pageTitle', id: `item-${Date.now()}`, text: 'عنوان جديد...' };
+                pageContent.push(newTitle); // CHANGED from unshift to push
+                recordState("Add New Title");
+                renderAll();
+            }
+
             function addNewQuestion() { 
                 const newQ = { 
-                    elementType: 'question', 
-                    id: `item-${Date.now()}`, 
-                    question: "أضف نص السؤال هنا...", 
+                    elementType: 'question', id: `item-${Date.now()}`, question: "أضف نص السؤال هنا...", 
                     answers: { a: "إجابة أ", b: "إجابة ب", c: "إجابة ج", d: "إجابة د" }, 
                     statement: newQuestionDefaults.includeStatement ? "أضف العبارة التمهيدية هنا..." : null,
-                    image: null, 
-                    layoutType: newQuestionDefaults.defaultLayout,
-                    restartNumbering: false 
+                    image: null, layoutType: newQuestionDefaults.defaultLayout, restartNumbering: false 
                 };
-                pageContent.push(newQ);
-                recordState("Add New Question");
-                renderAll();
+                pageContent.push(newQ); recordState("Add New Question"); renderAll();
             }
 
             function addNewEssayQuestion() { 
                 const newQ = { 
-                    elementType: 'essayQuestion', 
-                    id: `item-${Date.now()}`, 
-                    question: "أضف نص السؤال المقالي هنا...", 
-                    lines: 2, 
-                    statement: newQuestionDefaults.includeStatement ? "أضف العبارة التمهيدية هنا..." : null, 
-                    image: null, 
-                    restartNumbering: false 
+                    elementType: 'essayQuestion', id: `item-${Date.now()}`, question: "أضف نص السؤال المقالي هنا...", 
+                    lines: newEssayQuestionDefaults.defaultLines, 
+                    statement: newEssayQuestionDefaults.includeStatement ? "أضف العبارة التمهيدية هنا..." : null, 
+                    image: null, restartNumbering: false 
                 };
-                pageContent.push(newQ);
-                recordState("Add Essay Question");
-                renderAll();
+                pageContent.push(newQ); recordState("Add Essay Question"); renderAll();
             }
 
             function addQuestionHeader() { const newHeader = { elementType: 'questionHeader', id: `item-${Date.now()}`, text: 'أضف رأس الأسئلة هنا (مثال: اختر الإجابة الصحيحة)', restartNumbering: false }; pageContent.push(newHeader); recordState("Add Question Header"); renderAll(); }
             
-            function toggleHeaderVisibility(event) {
-                headerFooterState.header.visible = event.target.checked;
-                document.body.classList.toggle('header-hidden', !headerFooterState.header.visible);
-                recordState("Toggle Header Visibility");
-            }
-            function toggleFooterVisibility(event) {
-                headerFooterState.footer.visible = event.target.checked;
-                document.body.classList.toggle('footer-hidden', !headerFooterState.footer.visible);
-                recordState("Toggle Footer Visibility");
-            }
+            function toggleHeaderVisibility(event) { headerFooterState.header.visible = event.target.checked; document.body.classList.toggle('header-hidden', !headerFooterState.header.visible); recordState("Toggle Header Visibility"); }
+            function toggleFooterVisibility(event) { headerFooterState.footer.visible = event.target.checked; document.body.classList.toggle('footer-hidden', !headerFooterState.footer.visible); recordState("Toggle Footer Visibility"); }
 
-            function showReadingPassagePrompt() { passagePromptOverlay.classList.remove('hidden'); document.getElementById('passage-prompt-text').value = ''; document.getElementById('passage-prompt-q-count').value = '1'; document.getElementById('passage-prompt-text').focus(); }
+            function showReadingPassagePrompt() {
+                passagePromptOverlay.dataset.mode = 'add';
+                passagePromptOverlay.dataset.itemId = '';
+
+                document.getElementById('passage-prompt-title').textContent = 'إضافة قطعة قراءة';
+                document.getElementById('passage-prompt-p').textContent = 'أدخل نص القطعة (كل فقرة في سطر جديد) وحدد عدد الأسئلة المرتبطة بها.';
+                document.getElementById('passage-prompt-text').value = '';
+                document.getElementById('passage-prompt-q-count').classList.remove('hidden');
+                document.getElementById('passage-prompt-q-count').value = '1';
+                document.getElementById('passage-prompt-ok').textContent = 'أضف';
+                passagePromptOverlay.classList.remove('hidden');
+                document.getElementById('passage-prompt-text').focus();
+            }
             function showPoetryPrompt() { poetryPromptOverlay.classList.remove('hidden'); document.getElementById('poetry-prompt-text').value = ''; document.getElementById('poetry-prompt-q-count').value = '1'; document.getElementById('poetry-prompt-kashida-toggle').checked = true; document.getElementById('poetry-prompt-text').focus(); }
-
+            
             let tempWatermarkImageData = null;
-
             function setupWatermarkPromptListeners() {
-                const okBtn = document.getElementById('watermark-prompt-ok');
-                const cancelBtn = document.getElementById('watermark-prompt-cancel');
-                const removeBtn = document.getElementById('watermark-prompt-remove');
-                const radioBtns = document.querySelectorAll('input[name="watermark-type"]');
-                const imageUploadBtn = document.getElementById('watermark-image-upload-btn');
-                const imageInput = document.getElementById('watermark-image-input');
-                const opacitySlider = document.getElementById('watermark-opacity');
-                const rotationSlider = document.getElementById('watermark-rotation');
-                const sizeSlider = document.getElementById('watermark-size');
-
-                radioBtns.forEach(radio => radio.addEventListener('change', (e) => updateWatermarkSizeSliderUI(e.target.value)));
-
-                imageUploadBtn.addEventListener('click', () => imageInput.click());
-                imageInput.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            tempWatermarkImageData = event.target.result;
-                            document.getElementById('watermark-image-name').textContent = file.name;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                sizeSlider.addEventListener('input', () => updateSliderValueDisplay(sizeSlider, sizeSlider.dataset.unit));
-                opacitySlider.addEventListener('input', () => updateSliderValueDisplay(opacitySlider, ''));
-                rotationSlider.addEventListener('input', () => updateSliderValueDisplay(rotationSlider, '°'));
-                
-                okBtn.addEventListener('click', handleWatermarkApply);
-                removeBtn.addEventListener('click', handleWatermarkRemove);
-                cancelBtn.addEventListener('click', () => watermarkPromptOverlay.classList.add('hidden'));
+                document.getElementById('watermark-prompt-ok').addEventListener('click', handleWatermarkApply);
+                document.getElementById('watermark-prompt-remove').addEventListener('click', handleWatermarkRemove);
+                document.getElementById('watermark-prompt-cancel').addEventListener('click', () => watermarkPromptOverlay.classList.add('hidden'));
+                document.querySelectorAll('input[name="watermark-type"]').forEach(radio => radio.addEventListener('change', (e) => updateWatermarkSizeSliderUI(e.target.value)));
+                document.getElementById('watermark-image-upload-btn').addEventListener('click', () => document.getElementById('watermark-image-input').click());
+                document.getElementById('watermark-image-input').addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = (event) => { tempWatermarkImageData = event.target.result; document.getElementById('watermark-image-name').textContent = file.name; }; reader.readAsDataURL(file); } });
+                ['watermark-size', 'watermark-opacity', 'watermark-rotation'].forEach(id => { document.getElementById(id).addEventListener('input', (e) => updateSliderValueDisplay(e.target, e.target.dataset.unit || '')); });
             }
             
             function updateWatermarkSizeSliderUI(type) {
                 document.getElementById('watermark-text-control').classList.toggle('hidden', type !== 'text');
                 document.getElementById('watermark-image-control').classList.toggle('hidden', type === 'text');
-
                 const sizeSlider = document.getElementById('watermark-size');
                 const sizeLabel = document.getElementById('watermark-size-label');
-
-                if (type === 'text') {
-                    sizeLabel.textContent = 'حجم الخط';
-                    sizeSlider.min = 20;
-                    sizeSlider.max = 200;
-                    sizeSlider.step = 2;
-                    sizeSlider.dataset.unit = 'px';
-                } else { 
-                    sizeLabel.textContent = 'حجم الصورة (%)';
-                    sizeSlider.min = 10;
-                    sizeSlider.max = 100;
-                    sizeSlider.step = 1;
-                    sizeSlider.dataset.unit = '%';
-                }
+                if (type === 'text') { sizeLabel.textContent = 'حجم الخط'; sizeSlider.min = 20; sizeSlider.max = 200; sizeSlider.step = 2; sizeSlider.dataset.unit = 'px'; } 
+                else { sizeLabel.textContent = 'حجم الصورة (%)'; sizeSlider.min = 10; sizeSlider.max = 100; sizeSlider.step = 1; sizeSlider.dataset.unit = '%'; }
                 if(parseFloat(sizeSlider.value) > parseFloat(sizeSlider.max)) sizeSlider.value = sizeSlider.max;
                 if(parseFloat(sizeSlider.value) < parseFloat(sizeSlider.min)) sizeSlider.value = sizeSlider.min;
                 updateSliderValueDisplay(sizeSlider, sizeSlider.dataset.unit);
@@ -1581,61 +1888,28 @@
 
             function showWatermarkPrompt() {
                 tempWatermarkImageData = watermarkState.imageData;
-                
-                document.getElementById('watermark-opacity').value = watermarkState.opacity;
-                document.getElementById('watermark-rotation').value = watermarkState.rotation;
-                document.getElementById('watermark-size').value = watermarkState.size;
-                updateSliderValueDisplay(document.getElementById('watermark-opacity'), '');
-                updateSliderValueDisplay(document.getElementById('watermark-rotation'), '°');
-
+                document.getElementById('watermark-opacity').value = watermarkState.opacity; document.getElementById('watermark-rotation').value = watermarkState.rotation; document.getElementById('watermark-size').value = watermarkState.size;
+                updateSliderValueDisplay(document.getElementById('watermark-opacity'), ''); updateSliderValueDisplay(document.getElementById('watermark-rotation'), '°');
                 const currentType = watermarkState.visible ? watermarkState.type : 'text';
                 document.querySelector(`input[name="watermark-type"][value="${currentType}"]`).checked = true;
-                
-                if (currentType === 'image') {
-                    document.getElementById('watermark-text-input').value = '';
-                    document.getElementById('watermark-image-name').textContent = watermarkState.imageName || 'لم يتم اختيار صورة';
-                } else {
-                    document.getElementById('watermark-text-input').value = watermarkState.visible ? watermarkState.content : '';
-                    document.getElementById('watermark-image-name').textContent = 'لم يتم اختيار صورة';
-                }
-                
-                updateWatermarkSizeSliderUI(currentType); 
-                watermarkPromptOverlay.classList.remove('hidden');
+                if (currentType === 'image') { document.getElementById('watermark-text-input').value = ''; document.getElementById('watermark-image-name').textContent = watermarkState.imageName || 'لم يتم اختيار صورة'; } 
+                else { document.getElementById('watermark-text-input').value = watermarkState.visible ? watermarkState.content : ''; document.getElementById('watermark-image-name').textContent = 'لم يتم اختيار صورة'; }
+                updateWatermarkSizeSliderUI(currentType); watermarkPromptOverlay.classList.remove('hidden');
             }
 
             function handleWatermarkApply() {
-                const type = document.querySelector('input[name="watermark-type"]:checked').value;
-                const text = document.getElementById('watermark-text-input').value;
-                
-                if (type === 'text' && !text.trim()) { alert('الرجاء إدخال نص للعلامة المائية.'); return; }
-                if (type === 'image' && !tempWatermarkImageData) { alert('الرجاء اختيار صورة للعلامة المائية.'); return; }
-
-                watermarkState.type = type;
-                watermarkState.opacity = document.getElementById('watermark-opacity').value;
-                watermarkState.rotation = document.getElementById('watermark-rotation').value;
-                watermarkState.size = document.getElementById('watermark-size').value;
-                watermarkState.visible = true;
-
-                if (type === 'text') {
-                    watermarkState.content = text;
-                    watermarkState.imageData = null;
-                    watermarkState.imageName = '';
-                } else {
-                    watermarkState.imageData = tempWatermarkImageData;
-                    watermarkState.content = tempWatermarkImageData; 
-                    watermarkState.imageName = document.getElementById('watermark-image-name').textContent;
-                }
-
-                watermarkPromptOverlay.classList.add('hidden');
-                updateAllWatermarks();
-                recordState('Apply Watermark');
+                const type = document.querySelector('input[name="watermark-type"]:checked').value; const text = document.getElementById('watermark-text-input').value;
+                if ((type === 'text' && !text.trim()) || (type === 'image' && !tempWatermarkImageData)) { alert('الرجاء إدخال محتوى للعلامة المائية.'); return; }
+                watermarkState.type = type; watermarkState.opacity = document.getElementById('watermark-opacity').value;
+                watermarkState.rotation = document.getElementById('watermark-rotation').value; watermarkState.size = document.getElementById('watermark-size').value; watermarkState.visible = true;
+                if (type === 'text') { watermarkState.content = text; watermarkState.imageData = null; watermarkState.imageName = ''; } 
+                else { watermarkState.imageData = tempWatermarkImageData; watermarkState.content = tempWatermarkImageData; watermarkState.imageName = document.getElementById('watermark-image-name').textContent; }
+                watermarkPromptOverlay.classList.add('hidden'); updateAllWatermarks(); recordState('Apply Watermark');
             }
 
             function handleWatermarkRemove() {
                  watermarkState = { type: 'text', content: '', opacity: 0.25, rotation: 0, size: 80, visible: false, imageName: '', imageData: null };
-                watermarkPromptOverlay.classList.add('hidden');
-                updateAllWatermarks();
-                recordState('Remove Watermark');
+                watermarkPromptOverlay.classList.add('hidden'); updateAllWatermarks(); recordState('Remove Watermark');
             }
 
             function updateAllWatermarks() {
@@ -1643,58 +1917,43 @@
                 if (!watermarkState.visible || !watermarkState.content) return;
                 
                 document.querySelectorAll('.page').forEach(page => {
-                    const watermarkContainer = document.createElement('div');
-                    watermarkContainer.className = 'page-watermark';
-
-                    const contentWrapper = document.createElement('div');
-                    contentWrapper.className = 'watermark-content-wrapper';
-                    contentWrapper.style.opacity = watermarkState.opacity;
-                    contentWrapper.style.transform = `rotate(${watermarkState.rotation}deg)`;
-
+                    const watermarkContainer = document.createElement('div'); watermarkContainer.className = 'page-watermark';
+                    const contentWrapper = document.createElement('div'); contentWrapper.className = 'watermark-content-wrapper';
+                    contentWrapper.style.opacity = watermarkState.opacity; contentWrapper.style.transform = `rotate(${watermarkState.rotation}deg)`;
                     let contentElement;
-                    if (watermarkState.type === 'text') {
-                        contentElement = document.createElement('div');
-                        contentElement.className = 'watermark-content';
-                        contentElement.textContent = watermarkState.content;
-                        contentElement.style.fontSize = `${watermarkState.size}px`;
-                    } else if (watermarkState.type === 'image' && watermarkState.imageData) {
-                        contentElement = document.createElement('img');
-                        contentElement.className = 'watermark-content is-image';
-                        contentElement.src = watermarkState.imageData;
-                        contentElement.style.maxWidth = `${watermarkState.size}%`;
-                        contentElement.style.maxHeight = `${watermarkState.size}%`;
-                    }
-
-                    if (contentElement) {
-                        contentWrapper.appendChild(contentElement);
-                        watermarkContainer.appendChild(contentWrapper);
-                        page.prepend(watermarkContainer);
-                    }
+                    if (watermarkState.type === 'text') { contentElement = document.createElement('div'); contentElement.className = 'watermark-content'; contentElement.textContent = watermarkState.content; contentElement.style.fontSize = `${watermarkState.size}px`; } 
+                    else if (watermarkState.type === 'image' && watermarkState.imageData) { contentElement = document.createElement('img'); contentElement.className = 'watermark-content is-image'; contentElement.src = watermarkState.imageData; contentElement.style.maxWidth = `${watermarkState.size}%`; contentElement.style.maxHeight = `${watermarkState.size}%`; }
+                    if (contentElement) { contentWrapper.appendChild(contentElement); watermarkContainer.appendChild(contentWrapper); page.prepend(watermarkContainer); }
                 });
             }
-
+            
             function addReadingPassage(text, qCount) {
-                const passageId = `item-${Date.now()}`; const formattedText = `<p>${text.replace(/\n/g, '</p><p>')}</p>`;
-                const newPassage = { elementType: 'readingPassage', id: passageId, text: formattedText, restartNumbering: 1 }; pageContent.push(newPassage);
-                for(let i = 0; i < qCount; i++) { const newQ = { elementType: 'question', id: `item-${Date.now()}-${i}`, passageId: passageId, question: `سؤال ${i+1} على القطعة...`, answers: { a: "إجابة أ", b: "إجابة ب", c: "إجابة ج", d: "إجابة د" }, statement: null, image: null, layoutType: 3, restartNumbering: false }; pageContent.push(newQ); }
-                recordState("Add Reading Passage"); renderAll();
+                const passageId = `item-${Date.now()}`;
+                const textArray = text.split('\n').filter(line => line.trim() !== '');
+                const newPassage = { elementType: 'readingPassage', id: passageId, text: textArray, restartNumbering: false };
+                pageContent.push(newPassage);
+
+                for(let i = 0; i < qCount; i++) {
+                    pageContent.push({ elementType: 'question', id: `item-${Date.now()}-${i}`, passageId: passageId, question: `سؤال ${i+1} على القطعة...`, answers: { a: "أ", b: "ب", c: "ج", d: "د" }, statement: null, image: null, layoutType: 3, restartNumbering: i === 0 ? 1 : false });
+                }
+                recordState("Add Reading Passage");
+                renderAll();
             }
             
             function addPoeticText(text, qCount, useKashida) {
                 const sanitizedText = text.trim().split('\n').map(line => line.trim().replace(/\s{2,}/, '|')).join('\n');
-                const poetryId = `item-${Date.now()}`; const newPoetry = { elementType: 'poeticText', id: poetryId, text: sanitizedText, useKashida: useKashida, restartNumbering: 1 }; pageContent.push(newPoetry);
-                for (let i = 0; i < qCount; i++) { const newQ = { elementType: 'question', id: `item-${Date.now()}-${i}`, passageId: poetryId, question: `سؤال ${i + 1} على الأبيات...`, answers: { a: "إجابة أ", b: "إجابة ب", c: "إجابة ج", d: "إجابة د" }, statement: null, image: null, layoutType: 3, restartNumbering: false }; pageContent.push(newQ); }
+                const poetryId = `item-${Date.now()}`; const newPoetry = { elementType: 'poeticText', id: poetryId, text: sanitizedText, useKashida: useKashida, restartNumbering: false }; pageContent.push(newPoetry);
+                for (let i = 0; i < qCount; i++) { pageContent.push({ elementType: 'question', id: `item-${Date.now()}-${i}`, passageId: poetryId, question: `سؤال ${i + 1} على الأبيات...`, answers: { a: "أ", b: "ب", c: "ج", d: "د" }, statement: null, image: null, layoutType: 3, restartNumbering: i === 0 ? 1 : false }); }
                 recordState("Add Poetic Text"); renderAll();
             }
             
             function handlePoetryEdit(itemId) {
                 const item = pageContent.find(q => q.id === itemId); if (!item || item.elementType !== 'poeticText') return;
                 const wrapper = document.getElementById(itemId); if (!wrapper) return;
-                let fullTextLines = []; wrapper.querySelectorAll('.poetry-bait').forEach(bait => {
-                    const shatrs = bait.querySelectorAll('.poetry-shatr'); const kashidaRegex = new RegExp(kashida, 'g');
-                    const shatr1Text = shatrs[0] ? shatrs[0].textContent.replace(kashidaRegex, '') : '';
-                    const shatr2Text = shatrs[1] ? shatrs[1].textContent.replace(kashidaRegex, '') : '';
-                    fullTextLines.push(`${shatr1Text}|${shatr2Text}`);
+                let fullTextLines = []; const kashidaRegex = new RegExp(kashida, 'g');
+                wrapper.querySelectorAll('.poetry-bait').forEach(bait => {
+                    const shatrs = bait.querySelectorAll('.poetry-shatr');
+                    fullTextLines.push(`${(shatrs[0] ? shatrs[0].innerHTML : '').replace(kashidaRegex, '')}|${(shatrs[1] ? shatrs[1].innerHTML : '').replace(kashidaRegex, '')}`);
                 }); item.text = fullTextLines.join('\n'); recordState("Poetry Text Edit");
             }
 
@@ -1705,49 +1964,30 @@
                 recordState("Text Edit");
             }
             
-            function setupKashidaInfrastructure() {
-                canvas = document.createElement('canvas'); ctx = canvas.getContext('2d');
-                kashidaObserver = new ResizeObserver(entries => { for (const entry of entries) window.requestAnimationFrame(() => { if (entry.target.isConnected) justifyArabicText(entry.target); }); });
-            }
-            function isKashidaAllowed(text, charIndex) {
-                if (charIndex < 0 || charIndex >= text.length - 1) return false;
-                let followingChar = text[charIndex + 1]; if (!followingChar || diacritics.includes(followingChar)) return false;
-                let j = charIndex; let basePrecedingChar = text[j]; while(diacritics.includes(basePrecedingChar) && j > 0) { j--; basePrecedingChar = text[j]; }
-                if (noKashidaAfter.includes(basePrecedingChar)) return false; if (noKashidaBefore.includes(followingChar)) return false;
-                return true;
-            }
-            function justifyArabicText(element) {
-                const kashidaRegex = new RegExp(kashida, 'g'); const originalText = element.textContent.replace(kashidaRegex, '').trim();
-                if (!originalText) { element.textContent = ''; return; }
-                const style = window.getComputedStyle(element); ctx.font = `${style.getPropertyValue('font-style')} ${style.getPropertyValue('font-weight')} ${style.getPropertyValue('font-size')} ${style.getPropertyValue('font-family')}`;
-                let insertionPoints = []; for (let i = 0; i < originalText.length - 1; i++) if (isKashidaAllowed(originalText, i)) insertionPoints.push(i + 1);
-                const targetWidth = element.clientWidth - (parseFloat(style.paddingLeft) + parseFloat(style.paddingRight));
-                const currentWidth = ctx.measureText(originalText).width; const widthDifference = targetWidth - currentWidth;
-                if (widthDifference <= 2 || insertionPoints.length === 0) { element.textContent = originalText; return; }
-                const kashidaWidth = ctx.measureText(kashida).width; if (kashidaWidth <= 0.1) { element.textContent = originalText; return; }
-                let kashidasToAdd = Math.floor(widthDifference / kashidaWidth); if (kashidasToAdd <= 0) { element.textContent = originalText; return; }
-                let textAsArray = originalText.split(''); const numInsertionPoints = insertionPoints.length;
-                if (numInsertionPoints > 0) {
-                    const baseCount = Math.floor(kashidasToAdd / numInsertionPoints); let extraCount = kashidasToAdd % numInsertionPoints;
-                    for (let i = numInsertionPoints - 1; i >= 0; i--) { const index = insertionPoints[i]; let count = baseCount; if (extraCount > 0) { count++; extraCount--; } if(count > 0) textAsArray.splice(index, 0, kashida.repeat(count)); }
-                }
-                element.textContent = textAsArray.join('');
-            }
+            function setupKashidaInfrastructure() { canvas = document.createElement('canvas'); ctx = canvas.getContext('2d'); kashidaObserver = new ResizeObserver(entries => { for (const entry of entries) window.requestAnimationFrame(() => { if (entry.target.isConnected) justifyArabicText(entry.target); }); }); }
+            function isKashidaAllowed(text, charIndex) { if (charIndex < 0 || charIndex >= text.length - 1) return false; let followingChar = text[charIndex + 1]; if (!followingChar || diacritics.includes(followingChar)) return false; let j = charIndex; let basePrecedingChar = text[j]; while(diacritics.includes(basePrecedingChar) && j > 0) { j--; basePrecedingChar = text[j]; } if (noKashidaAfter.includes(basePrecedingChar) || noKashidaBefore.includes(followingChar)) return false; return true; }
+            function justifyArabicText(element) { const kashidaRegex = new RegExp(kashida, 'g'); const originalText = element.textContent.replace(kashidaRegex, '').trim(); if (!originalText) { element.textContent = ''; return; } const style = window.getComputedStyle(element); ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`; let insertionPoints = []; for (let i = 0; i < originalText.length - 1; i++) if (isKashidaAllowed(originalText, i)) insertionPoints.push(i + 1); const targetWidth = element.clientWidth - (parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)); const currentWidth = ctx.measureText(originalText).width; const widthDifference = targetWidth - currentWidth; if (widthDifference <= 2 || insertionPoints.length === 0) { element.textContent = originalText; return; } const kashidaWidth = ctx.measureText(kashida).width; if (kashidaWidth <= 0.1) { element.textContent = originalText; return; } let kashidasToAdd = Math.floor(widthDifference / kashidaWidth); if (kashidasToAdd <= 0) { element.textContent = originalText; return; } let textAsArray = originalText.split(''); const numInsertionPoints = insertionPoints.length; if (numInsertionPoints > 0) { const baseCount = Math.floor(kashidasToAdd / numInsertionPoints); let extraCount = kashidasToAdd % numInsertionPoints; for (let i = numInsertionPoints - 1; i >= 0; i--) { const index = insertionPoints[i]; let count = baseCount; if (extraCount > 0) { count++; extraCount--; } if(count > 0) textAsArray.splice(index, 0, kashida.repeat(count)); } } element.textContent = textAsArray.join(''); }
             
             function deleteItem(itemId) { pageContent = pageContent.filter(q => q.id !== itemId); recordState("Delete Item"); renderAll(); }
             
-            function moveItem(itemId, direction) {
-                const index = pageContent.findIndex(q => q.id === itemId);
-                if (direction === 'up' && index > 0) [pageContent[index], pageContent[index - 1]] = [pageContent[index - 1], pageContent[index]];
-                else if (direction === 'down' && index < pageContent.length - 1) [pageContent[index], pageContent[index + 1]] = [pageContent[index + 1], pageContent[index]];
-                recordState("Move Item"); renderAll();
-            }
+            function moveItem(itemId, direction) { const index = pageContent.findIndex(q => q.id === itemId); if (direction === 'up' && index > 0) [pageContent[index], pageContent[index - 1]] = [pageContent[index - 1], pageContent[index]]; else if (direction === 'down' && index < pageContent.length - 1) [pageContent[index], pageContent[index + 1]] = [pageContent[index + 1], pageContent[index]]; recordState("Move Item"); renderAll(); }
             
             function setEssayLines(itemId) { const item = pageContent.find(q => q.id === itemId); if (!item) return; showPrompt("عدد الأسطر", "أدخل عدد الأسطر المطلوبة للإجابة (1-15):", (num) => { let newLines = parseInt(num, 10); if (!isNaN(newLines) && newLines > 0 && newLines <= 15) { item.lines = newLines; recordState("Set Essay Lines"); renderAll(); } }, item.lines || 2, "number"); }
             
             function setupContextMenuListeners() {
-                document.getElementById("ctx-delete-header").addEventListener("click", () => { if (currentContextMenuTarget) currentContextMenuTarget.innerHTML = ''; });
-                document.getElementById("ctx-set-page-number").addEventListener("click", () => { showPrompt("ترقيم الصفحات", "ادخل رقم الصفحة الذي تريد البدء به:", (num) => { const newStart = parseInt(num, 10); if (!isNaN(newStart) && newStart > 0) { startPageNumber = newStart; recordState("Set Start Page Number"); updatePageNumbers(); } }, startPageNumber, "number"); });
+                // Text Format Context Menu Actions
+                document.getElementById("text-ctx-bold").addEventListener('mousedown', (e) => { e.preventDefault(); document.execCommand('bold'); textFormatContextMenu.classList.add('hidden'); recordState('Format Text: Bold'); });
+                document.getElementById("text-ctx-italic").addEventListener('mousedown', (e) => { e.preventDefault(); document.execCommand('italic'); textFormatContextMenu.classList.add('hidden'); recordState('Format Text: Italic'); });
+                document.getElementById("text-ctx-remove-format").addEventListener('mousedown', (e) => { e.preventDefault(); document.execCommand('removeFormat'); textFormatContextMenu.classList.add('hidden'); recordState('Format Text: Remove'); });
+                document.getElementById("text-ctx-underline").addEventListener('mousedown', (e) => { e.preventDefault(); document.execCommand('underline'); textFormatContextMenu.classList.add('hidden'); const newColor = underlineColorPicker.getColor().toHEXA().toString(); updateSelectionStyle('u', 'textDecorationColor', newColor); recordState('Format Text: Underline'); });
+                document.getElementById("text-ctx-highlight").addEventListener('mousedown', (e) => { e.preventDefault(); const color = highlightColorPicker.getColor().toRGBA().toString(); const isHighlighted = document.queryCommandValue('backColor').toLowerCase() !== 'rgba(0, 0, 0, 0)'; document.execCommand('backColor', false, isHighlighted ? 'transparent' : color); textFormatContextMenu.classList.add('hidden'); recordState('Format Text: Highlight'); });
+
+                // Element Context Menu Actions
+                document.getElementById("ctx-move-up").addEventListener("click", () => moveItem(currentContextMenuTarget.dataset.itemId, "up"));
+                document.getElementById("ctx-move-down").addEventListener("click", () => moveItem(currentContextMenuTarget.dataset.itemId, "down"));
+                document.getElementById("ctx-set-page-number").addEventListener("click", () => { showPrompt("ترقيم الصفحات", "ادخل رقم الصفحة الذي تريد البدء به:", (num) => { const newStart = parseInt(num, 10); if (!isNaN(newStart)) { startPageNumber = newStart; recordState("Set Start Page Number"); updatePageNumbers(); } }, startPageNumber, "number"); });
+                document.getElementById("ctx-add-speaker").addEventListener("click", () => addSpeaker(currentContextMenuTarget.dataset.itemId));
+                document.getElementById("ctx-delete-speaker").addEventListener("click", () => deleteSpeaker(currentContextMenuTarget.dataset.itemId));
                 document.getElementById("ctx-upload-image").addEventListener("click", () => imageUploadInput.click());
                 document.getElementById("ctx-add-image-url").addEventListener("click", () => changeImageFromUrl(currentContextMenuTarget.dataset.itemId));
                 document.getElementById("ctx-delete-image").addEventListener("click", () => deleteImage(currentContextMenuTarget.dataset.itemId));
@@ -1757,345 +1997,190 @@
                 document.getElementById("ctx-set-essay-lines").addEventListener("click", () => setEssayLines(currentContextMenuTarget.dataset.itemId));
                 document.getElementById("ctx-set-start-number").addEventListener("click", () => setStartNumber(currentContextMenuTarget.dataset.itemId));
                 document.getElementById("ctx-cancel-restart-numbering").addEventListener("click", () => cancelStartNumber(currentContextMenuTarget.dataset.itemId));
-                document.getElementById("ctx-move-up").addEventListener("click", () => moveItem(currentContextMenuTarget.dataset.itemId, "up"));
-                document.getElementById("ctx-move-down").addEventListener("click", () => moveItem(currentContextMenuTarget.dataset.itemId, "down"));
-                document.getElementById("ctx-delete-item").addEventListener("click", () => showConfirm('تأكيد الحذف', 'هل أنت متأكد من حذف هذا العنصر؟', () => deleteItem(currentContextMenuTarget.dataset.itemId)));
                 document.getElementById("ctx-toggle-kashida").addEventListener("click", () => { const itemId = currentContextMenuTarget.dataset.itemId; const item = pageContent.find(p => p.id === itemId); if(item) { item.useKashida = !item.useKashida; recordState("Toggle Kashida"); renderAll(); } });
+                document.getElementById("ctx-delete-item").addEventListener("click", () => showConfirm('تأكيد الحذف', 'هل أنت متأكد من حذف هذا العنصر؟', () => deleteItem(currentContextMenuTarget.dataset.itemId)));
+
+                // Header/Footer Context Menu
                 document.getElementById("ctx-delete-hf-box").addEventListener("click", deleteHeaderFooterBox);
+                document.getElementById("ctx-delete-all-hf-boxes").addEventListener("click", deleteAllHeaderFooterBoxes);
                 document.getElementById("ctx-add-hf-box").addEventListener("click", addHeaderFooterBox);
+                document.getElementById("ctx-replace-with-logo").addEventListener("click", () => imageUploadInput.click());
             }
 
             function handleMainContentContextMenu(e) {
                 e.preventDefault();
+                hideMenusOnClickOutside(e);
+                
+                const speakerTarget = e.target.closest('.speaker-name');
+                if (speakerTarget) {
+                    showContextMenu(e, speakerTarget);
+                    return;
+                }
+
                 const selection = window.getSelection();
-                const isTextSelected = selection && !selection.isCollapsed;
-                if (isTextSelected) {
-                    contextMenu.classList.add('hidden');
-                    showFormatToolbar(e);
+                if (selection && !selection.isCollapsed && selection.anchorNode.parentElement.closest('[contenteditable]')) {
+                    showTextFormatContextMenu(e);
                 } else {
-                    textFormatToolbar.classList.add('hidden');
-                    const targetElement = e.target.closest('.question-wrapper, .reading-passage-wrapper, .poetry-wrapper, .question-list-header, .page-title, .page-number, .header-box, .footer-box');
+                    const targetElement = e.target.closest('.question-wrapper, .page-title, .reading-passage-wrapper, .poetry-wrapper, .question-list-header, .page-number, .header-box, .footer-box');
                     if (targetElement) {
                         showContextMenu(e, targetElement);
-                    } else {
-                        contextMenu.classList.add('hidden');
                     }
                 }
             }
             
             function hideMenusOnClickOutside(e) {
-                if (!textFormatToolbar.contains(e.target)) { textFormatToolbar.classList.add("hidden"); }
-                if (!contextMenu.contains(e.target)) { contextMenu.classList.add("hidden"); }
+                if (!contextMenu.contains(e.target)) contextMenu.classList.add("hidden");
+                if (!textFormatContextMenu.contains(e.target)) textFormatContextMenu.classList.add("hidden");
+            }
+            
+            function showTextFormatContextMenu(event) {
+                textFormatContextMenu.style.top = `${event.pageY}px`; textFormatContextMenu.style.left = `${event.pageX}px`;
+                textFormatContextMenu.classList.remove("hidden");
+            }
+
+            function updateSelectionStyle(tag, styleProp, styleValue) {
+                let selection = window.getSelection();
+                if (!selection.rangeCount) return;
+                let range = selection.getRangeAt(0);
+                let container = range.commonAncestorContainer;
+                container.parentElement.querySelectorAll(tag).forEach(el => {
+                     if (selection.containsNode(el, true)) el.style[styleProp] = styleValue;
+                });
             }
 
             function showContextMenu(event, element) {
-                currentContextMenuTarget = element;
-                document.querySelectorAll('#custom-context-menu li[id^="ctx-"]').forEach(el => el.classList.add('hidden'));
+                currentContextMenuTarget = element.closest('[data-item-id]') || element;
+                document.querySelectorAll('#custom-context-menu > ul > li').forEach(el => el.classList.add('hidden'));
                 document.querySelectorAll('#custom-context-menu hr').forEach(el => el.classList.add('hidden'));
 
-                if (element.classList.contains('header-box') || element.classList.contains('footer-box')) {
-                    document.getElementById("ctx-add-hf-box").classList.remove('hidden');
+                if (element.classList.contains('speaker-name')) {
+                    document.getElementById('ctx-delete-speaker').classList.remove('hidden');
+                } else if (element.classList.contains('header-box') || element.classList.contains('footer-box')) {
                     const type = element.dataset.hfType;
-                    if (headerFooterState[type].items.length > 1) {
-                        document.getElementById("ctx-delete-hf-box").classList.remove('hidden');
-                    }
-                    document.getElementById("ctx-hf-separator").classList.remove('hidden');
-                } else if (element.classList.contains('page-title')) {
-                    document.getElementById("ctx-delete-header").classList.remove('hidden');
+                    const hfItems = headerFooterState[type].items;
+                    document.getElementById("ctx-add-hf-box").classList.remove('hidden');
+                    document.getElementById("ctx-delete-all-hf-boxes").classList.remove('hidden');
+                    document.getElementById("ctx-separator-hf").classList.remove('hidden');
+                    if (hfItems.length > 0) document.getElementById("ctx-delete-hf-box").classList.remove('hidden');
+                    if (type === 'header') document.getElementById("ctx-replace-with-logo").classList.remove('hidden');
                 } else if (element.classList.contains('page-number')) {
                     document.getElementById("ctx-set-page-number").classList.remove('hidden');
                 } else { 
-                    const itemId = element.dataset.itemId; const item = itemId ? pageContent.find(q => q.id === itemId) : null;
-                    if (!item) { contextMenu.classList.add("hidden"); return; }
-                    document.getElementById("ctx-move-up").classList.remove('hidden'); document.getElementById("ctx-move-down").classList.remove('hidden');
-                    document.getElementById("ctx-delete-item").classList.remove('hidden'); document.getElementById("ctx-separator-3").classList.remove('hidden');
-                    const isMcq = item.elementType === 'question'; const isEssay = item.elementType === 'essayQuestion'; const isPoetry = item.elementType === 'poeticText';
-                    if (isMcq || isEssay || item.elementType === 'questionHeader' || item.elementType === 'readingPassage' || isPoetry) {
+                    const itemId = currentContextMenuTarget.dataset.itemId;
+                    const item = itemId ? pageContent.find(q => q.id === itemId) : null;
+                    if (!item) { return; }
+                    document.getElementById("ctx-move-up").classList.remove('hidden');
+                    document.getElementById("ctx-move-down").classList.remove('hidden');
+                    document.getElementById("ctx-delete-item").classList.remove('hidden');
+                    document.getElementById("ctx-separator-3").classList.remove('hidden');
+                    
+                    const isMcqOrEssay = item.elementType === 'question' || item.elementType === 'essayQuestion';
+                    const isPoetry = item.elementType === 'poeticText'; 
+                    const isPassage = item.elementType === 'readingPassage';
+
+                    // Conditional speaker option
+                    if (isPoetry || isPassage || (isMcqOrEssay && item.statement)) {
+                        document.getElementById('ctx-add-speaker').classList.remove('hidden');
+                        document.getElementById('ctx-add-speaker').querySelector('span').textContent = item.speaker ? "تعديل القائل" : "إضافة القائل";
+                    }
+
+                    if (item.elementType !== 'pageTitle') {
                         document.getElementById("ctx-set-start-number").classList.remove('hidden');
                         if (item.restartNumbering !== false) document.getElementById("ctx-cancel-restart-numbering").classList.remove('hidden');
                         document.getElementById("ctx-separator-2").classList.remove('hidden');
                     }
+                    if(isPassage) {
+                         // The option to edit passage via prompt has been removed as per the request.
+                         document.getElementById("ctx-separator-1").classList.remove('hidden'); 
+                    }
                     if(isPoetry) document.getElementById("ctx-toggle-kashida").classList.remove('hidden');
-                    if (isMcq || isEssay) {
-                        document.getElementById("ctx-upload-image").classList.remove('hidden'); document.getElementById("ctx-add-image-url").classList.remove('hidden');
+                    if (isMcqOrEssay) {
+                        document.getElementById("ctx-upload-image").classList.remove('hidden');
+                        document.getElementById("ctx-add-image-url").classList.remove('hidden');
                         document.getElementById("ctx-delete-image").classList.toggle("hidden", !item.image);
                         document.getElementById("ctx-add-statement").classList.remove('hidden');
                         document.getElementById("ctx-delete-statement").classList.toggle("hidden", !item.statement);
-                        document.getElementById("ctx-separator-1").classList.remove('hidden');
+                        if(!isPassage) document.getElementById("ctx-separator-1").classList.remove('hidden');
                     }
-                    if (isMcq) document.getElementById("ctx-change-layout").classList.remove('hidden');
-                    if (isEssay) document.getElementById("ctx-set-essay-lines").classList.remove('hidden');
+                    if (item.elementType === 'question') document.getElementById("ctx-change-layout").classList.remove('hidden');
+                    if (item.elementType === 'essayQuestion') document.getElementById("ctx-set-essay-lines").classList.remove('hidden');
                 }
-
-                contextMenu.style.top = `${event.pageY}px`; contextMenu.style.left = `${event.pageX}px`;
+                contextMenu.style.top = `${event.pageY}px`;
+                contextMenu.style.left = `${event.pageX}px`;
                 contextMenu.classList.remove("hidden");
             }
-            
-            function deleteHeaderFooterBox() {
-                const target = currentContextMenuTarget;
-                const type = target.dataset.hfType;
-                const index = parseInt(target.dataset.hfIndex, 10);
-                if (!type || isNaN(index) || !headerFooterState[type] || headerFooterState[type].items.length <= 1) return;
-                
-                headerFooterState[type].items.splice(index, 1);
-                recordState("Delete Header/Footer Box");
-                renderAll();
-            }
-            
-            function addHeaderFooterBox() {
-                const target = currentContextMenuTarget;
-                const type = target.dataset.hfType;
-                if (!type || !headerFooterState[type]) return;
-                
-                headerFooterState[type].items.push({ text: 'خانة جديدة' });
-                recordState("Add Header/Footer Box");
-                renderAll();
-            }
 
-            function setStartNumber(itemId) { const item = pageContent.find(q => q.id === itemId); if (!item) return; showPrompt("ترقيم مخصص", "أدخل الرقم الذي تريد بدء العد منه لهذا العنصر:", (num) => { const newStart = parseInt(num, 10); if (!isNaN(newStart) && newStart > 0) { item.restartNumbering = newStart; recordState("Set Custom Start Number"); renderAll(); } }, item.restartNumbering || 1, "number"); }
+            function deleteHeaderFooterBox() { const target = currentContextMenuTarget; const type = target.dataset.hfType; const index = parseInt(target.dataset.hfIndex, 10); if (!type || isNaN(index) || !headerFooterState[type] || headerFooterState[type].items.length <= 0) return; headerFooterState[type].items.splice(index, 1); recordState("Delete Header/Footer Box"); renderAll(); }
+            function addHeaderFooterBox() { const target = currentContextMenuTarget; const type = target.dataset.hfType; if (!type || !headerFooterState[type] || headerFooterState[type].items.length >= 5) return; headerFooterState[type].items.push({ text: 'خانة جديدة' }); recordState("Add Header/Footer Box"); renderAll(); }
+            function deleteAllHeaderFooterBoxes() { const target = currentContextMenuTarget; const type = target.dataset.hfType; if (!type || !headerFooterState[type]) return; showConfirm("حذف كل الخانات؟", `هل أنت متأكد من حذف كل خانات ${type === 'header' ? 'الهيدر' : 'الفوتر'}؟`, () => { headerFooterState[type].items = []; recordState("Delete All Header/Footer Boxes"); renderAll(); }); }
+            function setStartNumber(itemId) { const item = pageContent.find(q => q.id === itemId); if (!item) return; showPrompt("ترقيم مخصص", "أدخل الرقم الذي تريد بدء العد منه لهذا العنصر:", (num) => { const newStart = parseInt(num, 10); if (!isNaN(newStart)) { item.restartNumbering = newStart; recordState("Set Custom Start Number"); renderAll(); } }, item.restartNumbering || '', "number"); }
             function cancelStartNumber(itemId) { const item = pageContent.find(q => q.id === itemId); if (item) { item.restartNumbering = false; recordState("Cancel Custom Start Number"); renderAll(); } }
             function changeAnswersLayout(itemId, layoutType) { const question = pageContent.find(q => q.id === itemId); if (question) { question.layoutType = layoutType; recordState("Change Answer Layout"); renderAll(); } }
-            function handleImageFileUpload(e) { const file = e.target.files[0]; const itemId = currentContextMenuTarget.dataset.itemId; if (!file || !itemId) return; const reader = new FileReader(); reader.onload = (event) => { const imageUrl = event.target.result; const question = pageContent.find(q => q.id === itemId); if (question) { question.image = imageUrl; recordState("Add Image from Device"); renderAll(); } }; reader.readAsDataURL(file); e.target.value = ''; }
+            function addSpeaker(itemId) { const item = pageContent.find(i => i.id === itemId); if(!item) return; showPrompt('إضافة القائل', 'أدخل اسم القائل:', (name) => { item.speaker = name.trim() || 'القائل'; recordState("Add/Edit Speaker"); renderAll(); }, item.speaker || ''); }
+            function deleteSpeaker(itemId) { const item = pageContent.find(i => i.id === itemId); if (item) { item.speaker = null; recordState("Delete Speaker"); renderAll(); } }
+
+            function handleImageFileUpload(e) {
+                const file = e.target.files[0]; if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const dataUrl = event.target.result;
+                    if (currentContextMenuTarget.classList.contains('header-box')) {
+                        const type = currentContextMenuTarget.dataset.hfType;
+                        const index = parseInt(currentContextMenuTarget.dataset.hfIndex, 10);
+                        if (type === 'header' && !isNaN(index)) {
+                            headerFooterState.header.items[index] = { isLogo: true, logoSrc: dataUrl };
+                            recordState("Replace HF box with logo");
+                        }
+                    } else {
+                        const itemId = currentContextMenuTarget.dataset.itemId;
+                        const item = pageContent.find(q => q.id === itemId);
+                        if (item) { item.image = dataUrl; recordState("Add Image from Device"); }
+                    }
+                    renderAll();
+                };
+                reader.readAsDataURL(file); e.target.value = '';
+            }
             function deleteImage(itemId) { const question = pageContent.find(q => q.id === itemId); question.image = null; recordState("Delete Image"); renderAll(); }
-            function changeStatement(itemId) { const question = pageContent.find(q => q.id === itemId); showPrompt("إضافة/تعديل عبارة", "أدخل نص العبارة:", (text) => { question.statement = text || null; recordState("Change Statement"); renderAll(); }, question.statement || ""); }
-            function deleteStatement(itemId) { const question = pageContent.find(q => q.id === itemId); question.statement = null; recordState("Delete Statement"); renderAll(); }
+            function changeStatement(itemId) { const question = pageContent.find(q => q.id === itemId); showPrompt("إضافة/تعديل عبارة", "أدخل نص العبارة:", (text) => { question.statement = text || null; if (!question.statement) { question.speaker = null; } recordState("Change Statement"); renderAll(); }, question.statement || ""); }
+            function deleteStatement(itemId) { const question = pageContent.find(q => q.id === itemId); question.statement = null; question.speaker = null; recordState("Delete Statement"); renderAll(); }
             function changeImageFromUrl(itemId) { const question = pageContent.find(q => q.id === itemId); showPrompt("إضافة/تغيير صورة (رابط)", "الرجاء إدخال رابط الصورة:", (url) => { if (url) { question.image = url; recordState("Change Image from URL"); renderAll(); } }, question.image || ""); }
 
             function showConfirm(title, text, onOkCallback) { const overlay = customPromptOverlay; const promptTitle = overlay.querySelector("#prompt-title"); const promptText = overlay.querySelector("#prompt-text"); const input = overlay.querySelector("#prompt-input"); const okBtn = overlay.querySelector("#prompt-ok"); const cancelBtn = overlay.querySelector("#prompt-cancel"); overlay.classList.remove("hidden"); promptTitle.textContent = title; promptText.textContent = text; input.classList.add('hidden'); const cleanup = () => { overlay.classList.add("hidden"); input.classList.remove('hidden'); okBtn.replaceWith(okBtn.cloneNode(true)); cancelBtn.replaceWith(cancelBtn.cloneNode(true)); }; document.getElementById("prompt-ok").addEventListener("click", () => { onOkCallback(); cleanup(); }, { once: true }); document.getElementById("prompt-cancel").addEventListener("click", cleanup, { once: true }); }
             function showPrompt(title, text, callback, defaultValue = "", inputType = "text") { const overlay = customPromptOverlay; const promptTitle = overlay.querySelector("#prompt-title"); const promptText = overlay.querySelector("#prompt-text"); const input = overlay.querySelector("#prompt-input"); const okBtn = overlay.querySelector("#prompt-ok"); const cancelBtn = overlay.querySelector("#prompt-cancel"); overlay.classList.remove("hidden"); promptTitle.textContent = title; promptText.textContent = text; input.type = inputType; input.value = defaultValue; input.classList.remove('hidden'); input.focus(); const cleanup = () => { overlay.classList.add("hidden"); okBtn.replaceWith(okBtn.cloneNode(true)); cancelBtn.replaceWith(cancelBtn.cloneNode(true)); }; document.getElementById("prompt-ok").addEventListener("click", () => { callback(input.value); cleanup(); }, { once: true }); document.getElementById("prompt-cancel").addEventListener("click", cleanup, { once: true }); }
             
             function addPickerBoundsListener(pickerInstance) { pickerInstance.on('show', instance => { setTimeout(() => { const pickerApp = instance.getRoot().app; const rect = pickerApp.getBoundingClientRect(); const scrollY = window.scrollY || window.pageYOffset; if (rect.top < 0) pickerApp.style.top = `${scrollY + 5}px`; if (rect.left < 0) pickerApp.style.left = '5px'; else if (rect.right > window.innerWidth) pickerApp.style.left = `${window.innerWidth - rect.width - 5}px`; if (rect.bottom > window.innerHeight) pickerApp.style.top = `${scrollY + window.innerHeight - rect.height - 5}px`; }, 0); }); }
-            
-            function updateSliderValueDisplay(sliderElement, unit = 'px') {
-                 const valueSpan = sliderElement.previousElementSibling.querySelector('.slider-value');
-                 if (valueSpan) {
-                    if (sliderElement.id === 'watermark-opacity') {
-                        valueSpan.textContent = parseFloat(sliderElement.value).toFixed(2);
-                    } else {
-                        valueSpan.textContent = `${sliderElement.value}${unit}`;
-                    }
-                 }
-            }
-
-            // NEW: Iterates through all editable content and applies an update function to its HTML
-            function updateHtmlInPageContent(updaterFunction) {
-                pageContent.forEach(item => {
-                    // Properties that can contain user-generated HTML
-                    const propsToCheck = ['question', 'answers.a', 'answers.b', 'answers.c', 'answers.d', 'statement', 'text'];
-
-                    propsToCheck.forEach(prop => {
-                        const path = prop.split('.');
-                        let targetObject = item;
-                        let value = null;
-                        let exists = true;
-
-                        for (let i = 0; i < path.length; i++) {
-                            if (targetObject && typeof targetObject === 'object' && path[i] in targetObject) {
-                                if (i === path.length - 1) {
-                                    value = targetObject[path[i]];
-                                } else {
-                                    targetObject = targetObject[path[i]];
-                                }
-                            } else {
-                                exists = false;
-                                break;
-                            }
-                        }
-
-                        if (exists && typeof value === 'string' && value.includes('<')) {
-                            const newValue = updaterFunction(value);
-
-                            // Re-navigate to set the property
-                            let setterObject = item;
-                            for (let i = 0; i < path.length - 1; i++) {
-                                setterObject = setterObject[path[i]];
-                            }
-                            setterObject[path[path.length - 1]] = newValue;
-                        }
-                    });
-                });
-            }
+            function updateSliderValueDisplay(sliderElement, unit = 'px') { const valueSpan = sliderElement.previousElementSibling.querySelector('.slider-value'); if (valueSpan) valueSpan.textContent = (sliderElement.id === 'watermark-opacity') ? parseFloat(sliderElement.value).toFixed(2) : `${sliderElement.value}${unit}`; }
             
             function setupStyleControls() {
                 const root = document.documentElement;
-                const sliderControls = [ {id:"title-fs",prop:"--title-fs",unit:"px"}, {id:"q-header-fs",prop:"--q-header-fs",unit:"px"}, {id:"passage-text-fs",prop:"--passage-text-fs",unit:"px"}, {id:"poetry-text-fs",prop:"--poetry-text-fs",unit:"px"}, {id:"poetry-num-fs",prop:"--poetry-num-fs",unit:"px"}, {id:"question-num-fs",prop:"--question-num-fs",unit:"px"}, {id:"question-text-fs",prop:"--question-text-fs",unit:"px"}, {id:"statement-fs",prop:"--statement-fs",unit:"px"}, {id:"answer-head-fs",prop:"--answer-head-fs",unit:"px"}, {id:"answer-text-fs",prop:"--answer-text-fs",unit:"px"}, {id:"page-num-fs",prop:"--page-num-fs",unit:"px"},  {id:"header-text-fs",prop:"--header-text-fs",unit:"px"}, {id:"footer-text-fs",prop:"--footer-text-fs",unit:"px"}, {id:"page-num-circle-size", prop:"--page-num-circle-size", unit:"px"}, {id:"answer-head-circle-size", prop:"--answer-head-circle-size", unit:"px"} ];
-                sliderControls.forEach(control => {
-                    const slider = document.getElementById(control.id);
-                    slider.addEventListener("input",() => { root.style.setProperty(control.prop,`${slider.value}${control.unit}`); updateSliderValueDisplay(slider, control.unit); });
-                    slider.addEventListener("change",() => { recordState("Style Change"); renderAll(); });
-                    updateSliderValueDisplay(slider, control.unit);
-                });
-                const colorControls = [
-                    { id: "page-header-bg", prop: "--page-header-bg", default: "#f8f9fa" },
-                    { id: "header-item-bg", prop: "--header-item-bg", default: "#ffffff" },
-                    { id: "page-footer-bg", prop: "--page-footer-bg", default: "#f8f9fa" },
-                    { id: "footer-item-bg", prop: "--footer-item-bg", default: "#ffffff" },
-                    { id: "page-title-text-color", prop: "--page-title-text-color", default: "#333333" },
-                    { id: "page-title-bg-color", prop: "--page-title-bg-color", default: "#ffffff" },
-                    { id: "page-title-border-color", prop: "--page-title-border-color", default: "#ced4da" },
-                    { id: "poetry-text-color", prop: "--poetry-text-color", default: "#333333" },
-                    { id: "poetry-num-color", prop: "--poetry-num-color", default: "#888888" },
-                    { id: "question-text-color", prop: "--question-text-color", default: "#212529" },
-                    { id: "question-num-color", prop: "--question-num-color", default: "#ffffff" },
-                    { id: "question-num-bg", prop: "--question-num-bg", default: "#007bff" },
-                    { id: "statement-text-color", prop: "--statement-text-color", default: "#555555" },
-                    { id: "statement-bg-color", prop: "--statement-bg-color", default: "#f1f3f5" },
-                    { id: "answer-head-color", prop: "--answer-head-color", default: "#495057" },
-                    { id: "answer-head-bg", prop: "--answer-head-bg", default: "#e9ecef" },
-                    { id: "answer-text-color", prop: "--answer-text-color", default: "#343a40" },
-                    { id: "question-border-color", prop: "--question-border-color", default: "#ced4da" },
-                    { id: "page-num-color", prop: "--page-num-color", default: "#333333" },
-                    { id: "page-num-bg-color", prop: "--page-num-bg-color", default: "#cccccc" }
-                ];
-                colorControls.forEach(control => {
-                    const pickr = Pickr.create({
-                        el: `#${control.id}`,
-                        theme: "classic",
-                        default: control.default,
-                        swatches: colorSwatches,
-                        components: {
-                            preview: true,
-                            opacity: true,
-                            hue: true,
-                            interaction: { input: true, clear: true, save: true }
-                        }
-                    });
-                    pickr.on("save", color => {
-                        root.style.setProperty(control.prop, color.toRGBA().toString());
-                        recordState("Color Change");
-                        pickr.hide();
-                    });
-                    addPickerBoundsListener(pickr);
-                });
-                const pickerConfig = {
-                    theme: 'classic', swatches: colorSwatches,
-                    components: { preview: true, opacity: true, hue: true, interaction: { input: true, clear: true, save: true } }
-                };
-                highlightColorPicker = Pickr.create({ ...pickerConfig, el: '#sidebar-highlight-color-picker', default: '#ffff00' });
-                underlineColorPicker = Pickr.create({ ...pickerConfig, el: '#sidebar-underline-color-picker', default: '#ff0000' });
+                const sliders = ["title-fs", "q-header-fs", "passage-text-fs", "poetry-text-fs", "poetry-num-fs", "question-num-fs", "question-text-fs", "statement-fs", "answer-head-fs", "answer-text-fs", "page-num-fs", "header-text-fs", "footer-text-fs", "header-logo-size", "page-num-circle-size", "answer-head-circle-size"];
+                sliders.forEach(id => { const slider = document.getElementById(id); const prop = `--${id}`; slider.addEventListener("input",() => { root.style.setProperty(prop, `${slider.value}px`); updateSliderValueDisplay(slider, "px"); }); slider.addEventListener("change",() => recordState("Style Change")); updateSliderValueDisplay(slider, "px"); });
                 
-                addPickerBoundsListener(highlightColorPicker);
-                addPickerBoundsListener(underlineColorPicker);
-
-                highlightColorPicker.on('save', (color, instance) => {
-                    if (color) {
-                        const newColor = color.toRGBA().toString();
-                        const updater = (htmlString) => {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = htmlString;
-                            const elements = tempDiv.querySelectorAll('font[style*="background-color"], span[style*="background-color"]');
-                            elements.forEach(el => el.style.backgroundColor = newColor);
-                            return tempDiv.innerHTML;
-                        };
-                        updateHtmlInPageContent(updater);
-                        recordState("Update All Highlight Colors");
-                        renderAll();
-                    }
-                    instance.hide();
-                });
-                underlineColorPicker.on('save', (color, instance) => {
-                    if (color) {
-                        const newColor = color.toRGBA().toString();
-                        const updater = (htmlString) => {
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = htmlString;
-                            const elements = tempDiv.querySelectorAll('u');
-                            elements.forEach(el => {
-                                // Only update color, preserve other text-decoration properties if they exist
-                                el.style.textDecorationColor = newColor;
-                             });
-                            return tempDiv.innerHTML;
-                        };
-                        updateHtmlInPageContent(updater);
-                        recordState("Update All Underline Colors");
-                        renderAll();
-                    }
-                    instance.hide();
-                });
+                const colorControls = [
+                    { id: "header-text-color-picker", prop: "--header-text-color", default: "#333333" }, { id: "footer-text-color-picker", prop: "--footer-text-color", default: "#333333" },
+                    { id: "page-header-bg", prop: "--page-header-bg", default: "#f8f9fa" }, { id: "header-item-bg", prop: "--header-item-bg", default: "#ffffff" },
+                    { id: "page-footer-bg", prop: "--page-footer-bg", default: "#f8f9fa" }, { id: "footer-item-bg", prop: "--footer-item-bg", default: "#ffffff" },
+                    { id: "page-title-text-color", prop: "--page-title-text-color", default: "#333333" }, { id: "page-title-bg-color", prop: "--page-title-bg-color", default: "#ffffff" }, { id: "page-title-border-color", prop: "--page-title-border-color", default: "#ced4da" },
+                    { id: "poetry-text-color", prop: "--poetry-text-color", default: "#333333" }, { id: "poetry-num-color", prop: "--poetry-num-color", default: "#888888" },
+                    { id: "question-text-color", prop: "--question-text-color", default: "#212529" }, { id: "question-num-color", prop: "--question-num-color", default: "#ffffff" }, { id: "question-num-bg", prop: "--question-num-bg", default: "#007bff" },
+                    { id: "statement-text-color", prop: "--statement-text-color", default: "#555555" }, { id: "statement-bg-color", prop: "--statement-bg-color", default: "#f1f3f5" },
+                    { id: "answer-head-color", prop: "--answer-head-color", default: "#495057" }, { id: "answer-head-bg", prop: "--answer-head-bg", default: "#e9ecef" },
+                    { id: "answer-text-color", prop: "--answer-text-color", default: "#343a40" }, { id: "question-border-color", prop: "--question-border-color", default: "#ced4da" },
+                    { id: "page-num-color", prop: "--page-num-color", default: "#333333" }, { id: "page-num-bg-color", prop: "--page-num-bg-color", default: "#cccccc" }
+                ];
+                colorControls.forEach(c => { const picker = Pickr.create({ el: `#${c.id}`, theme: "classic", default: c.default, swatches: colorSwatches, components: { preview: true, opacity: true, hue: true, interaction: { input: true, clear: true, save: true } } }); picker.on("save", color => { root.style.setProperty(c.prop, color.toRGBA().toString()); recordState("Color Change"); picker.hide(); }); addPickerBoundsListener(picker); });
+                
+                const pickerConfig = { theme: 'classic', swatches: colorSwatches, components: { preview: true, hue: true, interaction: { input: true, save: true } } };
+                highlightColorPicker = Pickr.create({ ...pickerConfig, el: '#sidebar-highlight-color-picker', default: '#ffff00' }); addPickerBoundsListener(highlightColorPicker);
+                underlineColorPicker = Pickr.create({ ...pickerConfig, el: '#sidebar-underline-color-picker', default: '#ff0000' }); addPickerBoundsListener(underlineColorPicker);
             }
-
-            function setupTextFormatToolbar() {
-                document.getElementById("highlight-btn").addEventListener("mousedown", e => {
-                    e.preventDefault();
-                    if (!window.getSelection().rangeCount) return;
-
-                    const editable = window.getSelection().anchorNode.parentElement.closest('[contenteditable]');
-                    let isHighlighted = false;
-
-                    try {
-                        const currentColor = document.queryCommandValue('backColor');
-                        if (currentColor && currentColor !== 'transparent' && currentColor !== 'rgba(0, 0, 0, 0)' && currentColor.toLowerCase() !== '#ffffff' && currentColor.toLowerCase() !== 'rgb(255, 255, 255)') {
-                            isHighlighted = true;
-                        }
-                    } catch (ex) {
-                        console.error("queryCommandValue for backColor failed", ex);
-                    }
-                    
-                    if (isHighlighted) {
-                        document.execCommand("backColor", false, "transparent");
-                    } else {
-                        document.execCommand("backColor", false, highlightColorPicker.getColor().toRGBA().toString());
-                    }
-
-                    if (editable) {
-                        editable.blur();
-                        editable.focus();
-                    }
-                });
-
-                document.getElementById("underline-btn").addEventListener("mousedown", e => {
-                    e.preventDefault();
-                    const selection = window.getSelection();
-                    if (!selection.rangeCount) return;
-                    
-                    const isCurrentlyUnderlined = document.queryCommandState('underline');
-                    
-                    document.execCommand("underline", false, null);
-
-                    if (!isCurrentlyUnderlined) {
-                        // If it wasn't underlined, we just added it. Let's try to color it.
-                        const parentEl = selection.anchorNode.parentElement;
-                        const uTag = parentEl.closest('u');
-                        if (uTag) {
-                           uTag.style.textDecorationColor = underlineColorPicker.getColor().toRGBA().toString();
-                           uTag.style.textDecorationThickness = '2px';
-                        }
-                    }
-
-                    const editable = selection.anchorNode.parentElement.closest("[contenteditable]");
-                    if (editable) {
-                        editable.blur();
-                        editable.focus();
-                    }
-                });
-
-                document.querySelectorAll("[data-align]").forEach(button => { button.addEventListener("mousedown", e => { e.preventDefault(); document.execCommand(button.dataset.align, false, null); updateToolbarActiveStates(); }); });
-            }
-
-
-            function updateToolbarActiveStates() {
-                document.querySelectorAll("[data-align]").forEach(button => { button.classList.toggle("active", document.queryCommandState(button.dataset.align)); });
-            }
-
-            function showFormatToolbar(event) {
-                const selection = window.getSelection();
-                if (!selection.rangeCount || selection.isCollapsed) {
-                    textFormatToolbar.classList.add("hidden"); return;
-                }
-                const range = selection.getRangeAt(0).getBoundingClientRect();
-                textFormatToolbar.style.top = `${range.top - textFormatToolbar.offsetHeight - 5 + window.scrollY}px`;
-                textFormatToolbar.style.left = `${range.left + range.width / 2 - textFormatToolbar.offsetWidth / 2 + window.scrollX}px`;
-                textFormatToolbar.classList.remove("hidden");
-                updateToolbarActiveStates();
-            }
-
 
             function recordState(action) {
                 const state = { 
                     data: JSON.parse(JSON.stringify(pageContent)), 
                     headerFooter: JSON.parse(JSON.stringify(headerFooterState)),
                     watermark: JSON.parse(JSON.stringify(watermarkState)),
-                    defaults: JSON.parse(JSON.stringify(newQuestionDefaults)),
+                    defaults: JSON.parse(JSON.stringify({mcq: newQuestionDefaults, essay: newEssayQuestionDefaults})),
                     styles: getCssVariablesState(), pageNumber: startPageNumber, action: action 
                 };
                 history.push(state); redoStack = []; updateUndoRedoButtons();
@@ -2103,19 +2188,22 @@
 
             function getCssVariablesState() {
                 const rootStyles = getComputedStyle(document.documentElement); const styles = {};
-                const propsToSave = [ "--page-header-bg", "--header-item-bg", "--page-footer-bg", "--footer-item-bg", "--title-fs","--q-header-fs","--passage-text-fs", "--poetry-text-fs", "--poetry-num-fs","--question-num-fs","--question-text-fs","--statement-fs","--answer-head-fs","--answer-text-fs","--page-num-fs", "--header-text-fs", "--footer-text-fs", "--question-text-color", "--poetry-text-color", "--poetry-num-color","--question-num-color","--question-num-bg","--statement-text-color","--statement-bg-color","--answer-head-color","--answer-head-bg","--answer-text-color","--question-border-color","--page-num-color", "--page-num-bg-color", "--page-num-circle-size", "--page-title-text-color", "--page-title-bg-color", "--page-title-border-color", "--answer-head-circle-size" ];
-                propsToSave.forEach(prop => { styles[prop] = rootStyles.getPropertyValue(prop).trim(); });
+                const propsToSave = [ "--page-header-bg", "--header-item-bg", "--page-footer-bg", "--footer-item-bg", "--header-text-color", "--footer-text-color", "--title-fs","--q-header-fs","--passage-text-fs", "--poetry-text-fs", "--poetry-num-fs","--question-num-fs","--question-text-fs","--statement-fs","--answer-head-fs","--answer-text-fs","--page-num-fs", "--header-text-fs", "--footer-text-fs", "--header-logo-size", "--question-text-color", "--poetry-text-color", "--poetry-num-color","--question-num-color","--question-num-bg","--statement-text-color","--statement-bg-color","--answer-head-color","--answer-head-bg","--answer-text-color","--question-border-color","--page-num-color", "--page-num-bg-color", "--page-num-circle-size", "--page-title-text-color", "--page-title-bg-color", "--page-title-border-color", "--answer-head-circle-size" ];
+                propsToSave.forEach(prop => styles[prop] = rootStyles.getPropertyValue(prop).trim());
                 return styles;
             }
             
             function applyState(state) {
                 pageContent = JSON.parse(JSON.stringify(state.data));
                 headerFooterState = JSON.parse(JSON.stringify(state.headerFooter));
-                watermarkState = { ...{ type: 'text', content: '', opacity: 0.25, rotation: 0, size: 80, visible: false, imageName: '', imageData: null }, ...JSON.parse(JSON.stringify(state.watermark || {})) };
-                newQuestionDefaults = { ...{ includeStatement: false, defaultLayout: '3' }, ...JSON.parse(JSON.stringify(state.defaults || {})) };
+                watermarkState = { ...{ visible: false }, ...JSON.parse(JSON.stringify(state.watermark || {})) };
+                const restoredDefaults = state.defaults || {};
+                newQuestionDefaults = { ...{ includeStatement: false, defaultLayout: '3' }, ...restoredDefaults.mcq };
+                newEssayQuestionDefaults = { ...{ includeStatement: false, defaultLines: 2 }, ...restoredDefaults.essay };
                 startPageNumber = state.pageNumber || 1;
+                
                 const root = document.documentElement;
-                for (const prop in state.styles) root.style.setProperty(prop, state.styles[prop]);
+                if(state.styles) for (const prop in state.styles) root.style.setProperty(prop, state.styles[prop]);
                 
                 toggleHeaderCheckbox.checked = headerFooterState.header.visible;
                 document.body.classList.toggle('header-hidden', !headerFooterState.header.visible);
@@ -2128,50 +2216,41 @@
 
             function updateSidebarControls(styles) {
                 document.querySelectorAll('.pcr-app').forEach(app => app.remove());
-                setupStyleControls(); 
-                document.querySelectorAll('.slider-control input[type=range]').forEach(slider => {
-                     if (!slider.id.startsWith('watermark-')) {
-                        const styleProp = `--${slider.id}`;
-                        if(styles[styleProp]) slider.value = parseInt(styles[styleProp]);
-                        updateSliderValueDisplay(slider, 'px');
-                     }
-                });
+                setupStyleControls(); // Re-initializes pickers with saved state implicitly through defaults
+                if (styles) {
+                    document.querySelectorAll('.slider-control input[type=range]').forEach(slider => {
+                         if (!slider.id.startsWith('watermark-')) {
+                            const styleProp = `--${slider.id}`;
+                            if(styles[styleProp]) slider.value = parseFloat(styles[styleProp]);
+                            updateSliderValueDisplay(slider, 'px');
+                         }
+                    });
+                }
             }
 
-            function undo() { if (history.length > 1) { redoStack.push(history.pop()); applyState(history[history.length - 1]); updateUndoRedoButtons(); } }
-            function redo() { if (redoStack.length > 0) { history.push(redoStack.pop()); applyState(history[history.length - 1]); updateUndoRedoButtons(); } }
+            function undo() { if (history.length > 1) { redoStack.push(history.pop()); const prevState = history[history.length - 1]; if(prevState) applyState(prevState); updateUndoRedoButtons(); } }
+            function redo() { if (redoStack.length > 0) { const nextState = redoStack.pop(); if(nextState) { history.push(nextState); applyState(nextState); } updateUndoRedoButtons(); } }
             function updateUndoRedoButtons() { undoBtn.disabled = history.length <= 1; redoBtn.disabled = redoStack.length === 0; }
             
             async function saveAsPDF() {
-                loader.classList.remove('hidden'); contextMenu.classList.add('hidden'); textFormatToolbar.classList.add('hidden');
-                
-                const originalZoom = currentZoomLevel;
-                applyZoom(1.0);
-
+                loader.classList.remove('hidden'); hideMenusOnClickOutside({});
+                const originalZoom = currentZoomLevel; applyZoom(1.0);
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4'); 
                 const pages = document.querySelectorAll('.page');
-                const pdfWidth = pdf.internal.pageSize.getWidth(); 
-                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const pdfWidth = pdf.internal.pageSize.getWidth(); const pdfHeight = pdf.internal.pageSize.getHeight();
                 try {
                     for (let i = 0; i < pages.length; i++) {
-                        const page = pages[i];
-                        loaderText.textContent = `جاري معالجة صفحة ${i + 1} من ${pages.length}...`;
+                        const page = pages[i]; loaderText.textContent = `جاري معالجة صفحة ${i + 1} من ${pages.length}...`;
                         if (document.activeElement) document.activeElement.blur();
-                        const canvas = await html2canvas(page, { scale: 2, useCORS: true, logging: false });
-                        const imgData = canvas.toDataURL('image/jpeg', 0.98);
+                        const canvas = await html2canvas(page, { scale: 2.5, useCORS: true, logging: false, removeContainer: true });
+                        const imgData = canvas.toDataURL('image/jpeg', 0.95);
                         if (i > 0) pdf.addPage();
-                        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+                        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
                     }
                     loaderText.textContent = 'جاري حفظ الملف...'; pdf.save('ورقة_الأسئلة.pdf');
-                } catch (error) { 
-                    console.error("Failed to generate PDF:", error); 
-                    alert("عذرًا، حدث خطأ أثناء إنشاء ملف PDF.");
-                } finally { 
-                    applyZoom(originalZoom);
-                    loader.classList.add('hidden'); 
-                    loaderText.textContent = 'جاري تحويل الصفحات إلى صور...'; 
-                }
+                } catch (error) { console.error("Failed to generate PDF:", error); alert("عذرًا، حدث خطأ أثناء إنشاء ملف PDF.");
+                } finally { applyZoom(originalZoom); loader.classList.add('hidden'); loaderText.textContent = 'جاري تحويل الصفحات إلى صور...'; }
             }
             
             initialize();
@@ -2179,4 +2258,3 @@
     </script>
 </body>
 </html>
-```
